@@ -5,8 +5,8 @@ import com.dobro.models.*;
 
 public class RenderField {
     private final String ghostPicture = "  \uD83D\uDC7B  ";
-    private final String treasureHunterPicture = "\uD83D\uDC64";
-    private final String treasurePicture = "\uD83E\uDE99";
+    private final String CoinHunterPicture = "\uD83D\uDC64";
+    private final String CoinPicture = "\uD83E\uDE99 ";
 
     private final String candlePicture = "\uD83D\uDD6F  ";
     private final String rockPicture = "️\uD83E\uDEA8 ";
@@ -19,8 +19,8 @@ public class RenderField {
                 Entity entity = worldMap.getEntities().get(new Cell(indexRow, indexColumn));
                 switch (entity) {
                     case Ghost ghost -> System.out.print(ghostPicture);
-                    case TreasureHunter treasureHunter -> System.out.print(treasureHunterPicture);
-                    case Treasure treasure -> System.out.print(treasurePicture);
+                    case CoinHunter CoinHunter -> System.out.print(CoinHunterPicture);
+                    case Coin Coin -> System.out.print(CoinPicture);
                     case Candle candle -> System.out.print(candlePicture);
                     case Rock rock -> System.out.print(rockPicture);
                     case Vase vase -> System.out.print(vasePicture);
