@@ -2,13 +2,13 @@ package com.dobro.service;
 
 import java.util.Objects;
 
-public class PartPath {
+public class NodePath {
     //переименовать в узел пути?
     private Cell currentCell;
     private Cell previousCell;
     private Integer distance;
 
-    public PartPath(Cell currentCell, Cell previousCell) {
+    public NodePath(Cell currentCell, Cell previousCell) {
         this.currentCell = currentCell;
         this.previousCell = previousCell;
     }
@@ -21,6 +21,14 @@ public class PartPath {
         return currentCell;
     }
 
+    public void setCurrentCell(Cell currentCell) {
+        this.currentCell = currentCell;
+    }
+
+    public void setPreviousCell(Cell previousCell) {
+        this.previousCell = previousCell;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -29,9 +37,8 @@ public class PartPath {
         if (obj == null || obj.getClass() != this.getClass()) {
             return false;
         }
-        PartPath partPath = (PartPath) obj;
-        return (partPath.getCurrentCell().equals(this.getCurrentCell()));
-
+        NodePath NodePath = (NodePath) obj;
+        return (NodePath.getCurrentCell().equals(this.getCurrentCell()) && NodePath.getPreviousCell().equals(this.getPreviousCell()));
     }
 
     @Override

@@ -125,11 +125,11 @@ public class WorldMap {
         return neighbors;
     }
 
-    public ArrayList<Cell> getAllowedNeighboringCells(Cell currentCell, Cell endingCell, HashSet<String> prohibitedEntities) {
+    public ArrayList<Cell> getAllowedNeighboringCells(Cell currentCell, Cell endingLocation, HashSet<String> prohibitedEntities) {
         ArrayList<Cell> neighboringCells = this.getNeighboringCells(currentCell);
 
         for (int indexCell = 0; indexCell < neighboringCells.size(); indexCell++) {
-            if (neighboringCells.contains(endingCell)) {
+            if (neighboringCells.contains(endingLocation)) {
                 continue;
             }
             if (isProhibited(neighboringCells.get(indexCell), prohibitedEntities)) {

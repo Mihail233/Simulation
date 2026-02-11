@@ -5,55 +5,54 @@ import com.dobro.models.*;
 import java.util.*;
 
 public class Path {
-    private WorldMap worldMap;
-    private final PartPath startingCell;
-    private final PartPath endingCell;
+    private final WorldMap worldMap;
+    private final NodePath startingLocation;
+    private final NodePath endingLocation;
+    private NodePath currentPath;
     private HashSet<String> prohibitedEntities;
-    private Set<PartPath> passedPartPath = new HashSet<>();
-    private ArrayDeque<PartPath> unexaminedPartPath = new ArrayDeque<>();
+    private Set<NodePath> passedNodePath = new HashSet<>();
+    private ArrayDeque<NodePath> unexaminedNodePath = new ArrayDeque<>();
 
-    public Path(WorldMap worldMap, Cell startingCell, Cell endingCell) {
-        this.startingCell = new PartPath(startingCell, null);
-        this.endingCell = new PartPath(endingCell, null);
-        this.prohibitedEntities = createProhibitedEntities();
+    public Path(WorldMap worldMap, Cell startingLocation, Cell endingLocation) {
         this.worldMap = worldMap;
+        this.startingLocation = new NodePath(startingLocation, startingLocation);
+        this.endingLocation = new NodePath(endingLocation, endingLocation);
+        this.prohibitedEntities = createProhibitedEntities();
     }
 
-    public PartPath reachEndingPath() {
-        //заменить null начало точка отсчета
-        PartPath endingPath = null;
-        unexaminedPartPath.add(startingCell);
-        while (!unexaminedPartPath.isEmpty() && endingPath == null) {
-            endingPath = reachPartPath(unexaminedPartPath.removeFirst());
-        }
-        return endingPath;
+    public void setCurrentPath(NodePath currentPath) {
+        this.currentPath = currentPath;
     }
 
-    public PartPath reachPartPath(PartPath currentPartPath) {
-        if (isReachEndingCell(currentPartPath)) {
-            System.out.println("Путь найден " + startingCell.getCurrentCell().getX() + " " + startingCell.getCurrentCell().getY() + " до " + endingCell.getCurrentCell().getX() + " " + endingCell.getCurrentCell().getY());
-            return currentPartPath;
+    public void reachEndingNode() {
+        initPath();
+        while (!isReachDeadEnd() && !isReachEndingCell()) {
+            reachNodePath();
         }
-
-        ArrayList<PartPath> neighbors = getAllowedNeighboringPartPath(currentPartPath, prohibitedEntities);
-        addNewPartPaths(neighbors);
-        if (isReachDeadEnd()) {
-            System.out.println("Путь не найден");
-        }
-        passedPartPath.add(currentPartPath);
-        return null;
     }
 
-    public boolean isReachEndingCell(PartPath currentPartPath) {
-        return currentPartPath.equals(endingCell);
+    public void initPath() {
+        setCurrentPath(startingLocation);
+        unexaminedNodePath.add(currentPath);
+    }
+
+    public void reachNodePath() {
+        setCurrentPath(unexaminedNodePath.removeFirst());
+        ArrayList<NodePath> neighbors = getAllowedNeighboringNodePath(currentPath, prohibitedEntities);
+        addNewNodePaths(neighbors);
+        passedNodePath.add(currentPath);
+    }
+
+    public boolean isReachEndingCell() {
+        return currentPath.getCurrentCell().equals(endingLocation.getCurrentCell());
     }
 
     public boolean isReachDeadEnd() {
-        return unexaminedPartPath.isEmpty();
+        return unexaminedNodePath.isEmpty();
     }
 
-    public void addNewPartPaths(ArrayList<PartPath> neighbors) {
-        unexaminedPartPath.addAll(neighbors);
+    public void addNewNodePaths(ArrayList<NodePath> neighbors) {
+        unexaminedNodePath.addAll(neighbors);
     }
 
     public HashSet<String> createProhibitedEntities() {
@@ -67,20 +66,20 @@ public class Path {
     }
 
 
-    public ArrayList<PartPath> getAllowedNeighboringPartPath(PartPath currentPartPath, HashSet<String> prohibitedEntities) {
-        ArrayList<Cell> allowedNeighboringCells = this.worldMap.getAllowedNeighboringCells(currentPartPath.getCurrentCell(), endingCell.getCurrentCell(), prohibitedEntities);
-        ArrayList<PartPath> allowedNeighboringPartPath = new ArrayList<>();
+    public ArrayList<NodePath> getAllowedNeighboringNodePath(NodePath currentNodePath, HashSet<String> prohibitedEntities) {
+        ArrayList<Cell> allowedNeighboringCells = this.worldMap.getAllowedNeighboringCells(currentNodePath.getCurrentCell(), endingLocation.getCurrentCell(), prohibitedEntities);
+        ArrayList<NodePath> allowedNeighboringNodePath = new ArrayList<>();
         for (Cell cell : allowedNeighboringCells) {
-            PartPath partPath = new PartPath(cell, currentPartPath.getCurrentCell());
-            if (!passedPartPath.contains(partPath)) {
-                allowedNeighboringPartPath.add(partPath);
+            NodePath NodePath = new NodePath(cell, currentNodePath.getCurrentCell());
+            if (!passedNodePath.contains(NodePath)) {
+                allowedNeighboringNodePath.add(NodePath);
             }
         }
-        return allowedNeighboringPartPath;
+        return allowedNeighboringNodePath;
     }
 
     public boolean isPathFound() {
-        PartPath endingPath = this.reachEndingPath();
-        return endingPath != null;
+        this.reachEndingNode();
+        return currentPath.equals(endingLocation);
     }
 }
