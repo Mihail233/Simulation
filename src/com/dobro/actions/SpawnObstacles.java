@@ -11,12 +11,12 @@ public class SpawnObstacles extends Spawn {
     private final List<Supplier<? extends Entity>> obstaclesFactory = List.of(Candle::new, Rock::new, Vase::new);
 
     @Override
-    public void spawnEntity(Cell cell, WorldMap worldMap) {
+    public void spawnEntity(Cell spawnLocation, WorldMap worldMap) {
         if (super.isPlaceEntity(worldMap.getSpawnRate(), SpawnProbabilities.OBSTACLE.getSpawnProbability())) {
             int indexRandomObstacle = (int) (getRandomNumber() * obstaclesFactory.size());
-            worldMap.setEntity(cell, obstaclesFactory.get(indexRandomObstacle).get());
+            worldMap.setEntity(spawnLocation, obstaclesFactory.get(indexRandomObstacle).get());
         } else {
-            worldMap.setEntity(cell, new GraniteBlock());
+            worldMap.setEntity(spawnLocation, new GraniteBlock());
         }
     }
 }

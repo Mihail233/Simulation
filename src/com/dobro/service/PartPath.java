@@ -3,6 +3,7 @@ package com.dobro.service;
 import java.util.Objects;
 
 public class PartPath {
+    //переименовать в узел пути?
     private Cell currentCell;
     private Cell previousCell;
     private Integer distance;

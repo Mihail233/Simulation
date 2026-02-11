@@ -8,31 +8,28 @@ import com.dobro.service.WorldMap;
 import java.util.ArrayList;
 
 public class SpawnCoin extends Spawn {
-    //переимновать
-    private ArrayList<Cell> cells = new ArrayList<>();
+    private final ArrayList<Cell> previousSpawnLocations = new ArrayList<>();
 
     @Override
-    public void spawnEntity(Cell currentCell, WorldMap worldMap) {
-        if (super.isPlaceEntity(worldMap.getSpawnRate(), SpawnProbabilities.COIN.getSpawnProbability())) {
-            placeCreatureOnEmptyCell(currentCell, worldMap);
+    public void spawnEntity(Cell currentSpawnLocation, WorldMap worldMap) {
+        if (worldMap.isEmptyCell(currentSpawnLocation)) {
+            if (super.isPlaceEntity(worldMap.getSpawnRate(), SpawnProbabilities.COIN.getSpawnProbability())) {
+                if (!hasConnectionWithPreviousSpawn(worldMap, currentSpawnLocation)) {
+                    return;
+                }
+                worldMap.setEntity(currentSpawnLocation, new Coin());
+                previousSpawnLocations.add(currentSpawnLocation);
+            }
         }
     }
 
-    public void placeCreatureOnEmptyCell(Cell currentCell, WorldMap worldMap) {
-        if (worldMap.isEmptyCell(currentCell)) {
-            Coin newCoin = new Coin();
-            worldMap.setEntity(currentCell, newCoin);
-            if (!cells.isEmpty()) {
-                for (Cell cell: cells) {
-                    Path path = new Path(worldMap, currentCell, cell);
-                    path.reachEndingPath();
-                }
+    public boolean hasConnectionWithPreviousSpawn(WorldMap worldMap, Cell currentSpawnLocation) {
+        for (Cell previousSpawnLocation : previousSpawnLocations) {
+            Path path = new Path(worldMap, currentSpawnLocation, previousSpawnLocation);
+            if (!path.isPathFound()) {
+                return false;
             }
-            cells.add(currentCell);
-//            if (Path.isAllFind) {
-//                worldMap.setEntity(cell, new Coin());
-//
-//            }
         }
+        return true;
     }
 }

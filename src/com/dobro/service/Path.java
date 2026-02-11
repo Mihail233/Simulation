@@ -6,32 +6,32 @@ import java.util.*;
 
 public class Path {
     private WorldMap worldMap;
-    private final Cell startingCell;
-    private final Cell endingCell;
+    private final PartPath startingCell;
+    private final PartPath endingCell;
     private HashSet<String> prohibitedEntities;
     private Set<PartPath> passedPartPath = new HashSet<>();
     private ArrayDeque<PartPath> unexaminedPartPath = new ArrayDeque<>();
 
     public Path(WorldMap worldMap, Cell startingCell, Cell endingCell) {
-        this.startingCell = startingCell;
-        this.endingCell = endingCell;
-        this.prohibitedEntities =  createProhibitedEntities();
+        this.startingCell = new PartPath(startingCell, null);
+        this.endingCell = new PartPath(endingCell, null);
+        this.prohibitedEntities = createProhibitedEntities();
         this.worldMap = worldMap;
     }
 
-    public void reachEndingPath() {
+    public PartPath reachEndingPath() {
         //заменить null начало точка отсчета
-        PartPath currentPartPath = new PartPath(startingCell, null);
         PartPath endingPath = null;
-        unexaminedPartPath.add(currentPartPath);
+        unexaminedPartPath.add(startingCell);
         while (!unexaminedPartPath.isEmpty() && endingPath == null) {
             endingPath = reachPartPath(unexaminedPartPath.removeFirst());
         }
+        return endingPath;
     }
 
     public PartPath reachPartPath(PartPath currentPartPath) {
         if (isReachEndingCell(currentPartPath)) {
-            System.out.println("Путь найден " + startingCell.getX() + " " + startingCell.getY() + " до " + endingCell.getX() + " " + endingCell.getY());
+            System.out.println("Путь найден " + startingCell.getCurrentCell().getX() + " " + startingCell.getCurrentCell().getY() + " до " + endingCell.getCurrentCell().getX() + " " + endingCell.getCurrentCell().getY());
             return currentPartPath;
         }
 
@@ -45,7 +45,7 @@ public class Path {
     }
 
     public boolean isReachEndingCell(PartPath currentPartPath) {
-        return currentPartPath.getCurrentCell().equals(endingCell);
+        return currentPartPath.equals(endingCell);
     }
 
     public boolean isReachDeadEnd() {
@@ -68,14 +68,19 @@ public class Path {
 
 
     public ArrayList<PartPath> getAllowedNeighboringPartPath(PartPath currentPartPath, HashSet<String> prohibitedEntities) {
-        ArrayList<Cell> allowedNeighboringCells = this.worldMap.getAllowedNeighboringCells(currentPartPath.getCurrentCell(), endingCell, prohibitedEntities);
+        ArrayList<Cell> allowedNeighboringCells = this.worldMap.getAllowedNeighboringCells(currentPartPath.getCurrentCell(), endingCell.getCurrentCell(), prohibitedEntities);
         ArrayList<PartPath> allowedNeighboringPartPath = new ArrayList<>();
-        for (Cell cell: allowedNeighboringCells) {
+        for (Cell cell : allowedNeighboringCells) {
             PartPath partPath = new PartPath(cell, currentPartPath.getCurrentCell());
             if (!passedPartPath.contains(partPath)) {
                 allowedNeighboringPartPath.add(partPath);
             }
         }
         return allowedNeighboringPartPath;
+    }
+
+    public boolean isPathFound() {
+        PartPath endingPath = this.reachEndingPath();
+        return endingPath != null;
     }
 }
