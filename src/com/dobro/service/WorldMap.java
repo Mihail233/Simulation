@@ -2,13 +2,12 @@ package com.dobro.service;
 
 import com.dobro.models.Entity;
 import com.dobro.models.GraniteBlock;
-import com.dobro.models.Obstacle;
 
 import java.util.*;
 
 public class WorldMap {
     private final Cell originWorldMap = new Cell(0, 0);
-    private HashMap<Cell, Entity> entities = new HashMap<>();
+    private final HashMap<Cell, Entity> entities = new HashMap<>();
     private final Scanner scanner = new Scanner(System.in);
     private final float spawnRate;
     private int maxWidthField;

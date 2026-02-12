@@ -1,4 +1,4 @@
 package com.dobro.models;
 
-public class Vase extends Obstacle {
+public class Vase extends Entity {
 }
