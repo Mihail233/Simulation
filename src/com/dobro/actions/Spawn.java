@@ -11,8 +11,8 @@ abstract public class Spawn extends Action {
     public void execute(WorldMap worldMap) {
         for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
             for (int indexColumn = worldMap.getOriginWorldMap().getX(); indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
-                Cell currentSpawnLocation = new Cell(indexRow, indexColumn);
-                spawnEntity(currentSpawnLocation, worldMap);
+                Cell spawnLocation = new Cell(indexRow, indexColumn);
+                spawnEntity(spawnLocation, worldMap);
             }
         }
     }

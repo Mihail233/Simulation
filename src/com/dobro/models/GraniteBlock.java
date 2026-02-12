@@ -1,4 +1,4 @@
 package com.dobro.models;
 
-public class GraniteBlock extends Entity {
+public class GraniteBlock extends Obstacle {
 }

@@ -12,7 +12,7 @@ public class SpawnObstacles extends Spawn {
 
     @Override
     public void spawnEntity(Cell spawnLocation, WorldMap worldMap) {
-        if (super.isPlaceEntity(worldMap.getSpawnRate(), SpawnProbabilities.OBSTACLE.getSpawnProbability())) {
+        if (super.isPlaceEntity(worldMap.getSpawnRate(), SpawnProbability.OBSTACLE.getProbability())) {
             int indexRandomObstacle = (int) (getRandomNumber() * obstaclesFactory.size());
             worldMap.setEntity(spawnLocation, obstaclesFactory.get(indexRandomObstacle).get());
         } else {

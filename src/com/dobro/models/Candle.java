@@ -1,4 +1,4 @@
 package com.dobro.models;
 
-public class Candle extends Entity {
+public class Candle extends Obstacle {
 }

@@ -2,6 +2,7 @@ package com.dobro.service;
 
 import com.dobro.models.Entity;
 import com.dobro.models.GraniteBlock;
+import com.dobro.models.Obstacle;
 
 import java.util.*;
 
@@ -114,7 +115,8 @@ public class WorldMap {
         return sum;
     }
 
-    public ArrayList<Cell> getNeighboringCells(Cell currentCell) {
+    //сделать алгоритм
+    public ArrayList<Cell> getNeighbors(Cell currentCell) {
         Cell leftNeighbor = new Cell(currentCell.getX() - 1, currentCell.getY());
         Cell rightNeighbor = new Cell(currentCell.getX() + 1, currentCell.getY());
         Cell upperNeighbor = new Cell(currentCell.getX() , currentCell.getY() + 1);
@@ -123,27 +125,6 @@ public class WorldMap {
         ArrayList<Cell> neighbors = new ArrayList<>(List.of(leftNeighbor, rightNeighbor, upperNeighbor, lowerNeighbor));
         neighbors.removeIf(this::isOffTheMap);
         return neighbors;
-    }
-
-    public ArrayList<Cell> getAllowedNeighboringCells(Cell currentCell, Cell endingLocation, HashSet<String> prohibitedEntities) {
-        ArrayList<Cell> neighboringCells = this.getNeighboringCells(currentCell);
-
-        for (int indexCell = 0; indexCell < neighboringCells.size(); indexCell++) {
-            if (neighboringCells.contains(endingLocation)) {
-                continue;
-            }
-            if (isProhibited(neighboringCells.get(indexCell), prohibitedEntities)) {
-                neighboringCells.remove(indexCell);
-                indexCell--;
-            }
-        }
-        return neighboringCells;
-    }
-
-    private boolean isProhibited(Cell currentCell, HashSet<String> prohibitedEntities) {
-        //переименовать nameClazz
-        String nameClazz = this.getEntities().get(currentCell).getClass().getName();
-        return prohibitedEntities.contains(nameClazz);
     }
 
     public boolean isOffTheMap(Cell currentCell) {

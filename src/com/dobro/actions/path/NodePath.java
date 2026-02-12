@@ -1,9 +1,10 @@
-package com.dobro.service;
+package com.dobro.actions.path;
+
+import com.dobro.service.Cell;
 
 import java.util.Objects;
 
 public class NodePath {
-    //переименовать в узел пути?
     private Cell currentCell;
     private Cell previousCell;
     private Integer distance;
