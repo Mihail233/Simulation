@@ -1,32 +1,37 @@
 package com.dobro.service;
 
 //for graniteBlockPicture [*], ⬛, ⬜, ◻️
+
 import com.dobro.models.*;
 
-public class RenderField {
-    private final String ghostPicture = "  \uD83D\uDC7B  ";
-    private final String CoinHunterPicture = "\uD83D\uDC64";
-    private final String CoinPicture = "\uD83E\uDE99 ";
+import java.util.Optional;
 
+public class RenderField {
+    private final String ghostPicture = "\uD83D\uDC7B ";
+    private final String coinHunterPicture = "\uD83D\uDC64 ";
+    private final String coinPicture = "\uD83E\uDE99 ";
     private final String candlePicture = "\uD83D\uDD6F  ";
     private final String rockPicture = "️\uD83E\uDEA8 ";
     private final String vasePicture = "\uD83C\uDFFA ";
     private final String graniteBlockPicture = "◻\uFE0F  ";
 
     public void displayWorldMap(WorldMap worldMap) {
-        for (int indexRow = 0; indexRow < worldMap.getMaxWidthField(); indexRow++) {
-            for (int indexColumn = 0; indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
-                Entity entity = worldMap.getEntities().get(new Cell(indexRow, indexColumn));
-                switch (entity) {
-                    case Ghost ghost -> System.out.print(ghostPicture);
-                    case CoinHunter CoinHunter -> System.out.print(CoinHunterPicture);
-                    case Coin Coin -> System.out.print(CoinPicture);
-                    case Candle candle -> System.out.print(candlePicture);
-                    case Rock rock -> System.out.print(rockPicture);
-                    case Vase vase -> System.out.print(vasePicture);
-                    case GraniteBlock graniteBlock -> System.out.print(graniteBlockPicture);
-                    default -> throw new IllegalArgumentException("Unexpected value");
-                }
+        for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
+            for (int indexColumn = worldMap.getOriginWorldMap().getX(); indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
+                Optional<? extends Entity> entity = worldMap.getEntity(new Cell(indexRow, indexColumn));
+                entity.ifPresentOrElse((presentEntity) -> {
+                            switch (presentEntity) {
+                                case Ghost ghost -> System.out.print(ghostPicture);
+                                case CoinHunter CoinHunter -> System.out.print(coinHunterPicture);
+                                case Coin Coin -> System.out.print(coinPicture);
+                                case Candle candle -> System.out.print(candlePicture);
+                                case Rock rock -> System.out.print(rockPicture);
+                                case Vase vase -> System.out.print(vasePicture);
+                                default -> throw new IllegalArgumentException("Unexpected value");
+                            }
+                        },
+                        () -> System.out.print(graniteBlockPicture)
+                );
             }
             System.out.println();
         }

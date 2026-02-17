@@ -1,9 +1,6 @@
 package com.dobro.service;
 
-import com.dobro.actions.Action;
-import com.dobro.actions.SpawnObstacles;
-import com.dobro.actions.SpawnCreatures;
-import com.dobro.actions.SpawnCoin;
+import com.dobro.actions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +25,8 @@ public class Simulation {
     public void startSimulation() {
         executeAction(initActions);
         renderField.displayWorldMap(worldMap);
-        System.out.println(worldMap.sumEntities());
-//        nextTurn();
+//        System.out.println(worldMap.sumEntities());
 
-        //рендер
-        //сгенерировать поле с предметами
         //а потом попросить пользователя ввести существ(сумма существ < пустые поля)
 //        while (true) {
 //            nextTurn();
@@ -46,7 +40,9 @@ public class Simulation {
     public void createAction() {
         initActions.add(new SpawnObstacles());
         initActions.add(new SpawnCoin());
-        initActions.add(new SpawnCreatures());
+        initActions.add(new SpawnCoinHunter());
+        initActions.add(new SpawnGhost());
+
         //turnActions.add();
     }
 

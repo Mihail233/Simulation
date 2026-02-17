@@ -80,8 +80,12 @@ public class Path {
     }
 
     public boolean isAllowed(Cell neighbor) {
-        Class<? extends Entity> clazz = worldMap.getEntities().get(neighbor).getClass();
-        return allowedPaths.contains(clazz);
+        Optional<? extends Entity> entity = worldMap.getEntity(neighbor);
+        if (entity.isPresent()) {
+            Class<? extends Entity> clazz = worldMap.getEntities().get(neighbor).getClass();
+            return allowedPaths.contains(clazz);
+        }
+        return true;
     }
 
     public boolean hasEndingLocation(ArrayList<Cell> neighbors) {

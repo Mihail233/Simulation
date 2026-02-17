@@ -3,7 +3,6 @@ package com.dobro.actions.path;
 import com.dobro.models.*;
 
 public enum AllowedPath {
-    GRANITE_BLOCK(GraniteBlock.class),
     GHOST(Ghost.class),
     COIN_HUNTER(CoinHunter.class);
 
