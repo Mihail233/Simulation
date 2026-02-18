@@ -1,4 +1,4 @@
-package com.dobro.actions;
+package com.dobro.actions.spawn;
 
 import com.dobro.actions.path.Path;
 import com.dobro.models.Entity;

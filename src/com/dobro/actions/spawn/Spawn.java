@@ -1,5 +1,6 @@
-package com.dobro.actions;
+package com.dobro.actions.spawn;
 
+import com.dobro.actions.Action;
 import com.dobro.service.WorldMap;
 
 abstract public class Spawn extends Action {

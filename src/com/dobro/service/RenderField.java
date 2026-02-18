@@ -16,7 +16,9 @@ public class RenderField {
     private final String graniteBlockPicture = "◻\uFE0F  ";
 
     public void displayWorldMap(WorldMap worldMap) {
+        System.out.println("⬛ ".repeat(worldMap.getMaxLengthField() + 2));
         for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
+            System.out.print("⬛ ");
             for (int indexColumn = worldMap.getOriginWorldMap().getX(); indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
                 Optional<? extends Entity> entity = worldMap.getEntity(new Cell(indexRow, indexColumn));
                 entity.ifPresentOrElse((presentEntity) -> {
@@ -33,7 +35,8 @@ public class RenderField {
                         () -> System.out.print(graniteBlockPicture)
                 );
             }
-            System.out.println();
+            System.out.println("⬛");
         }
+        System.out.print("⬛ ".repeat(worldMap.getMaxLengthField() + 2));
     }
 }

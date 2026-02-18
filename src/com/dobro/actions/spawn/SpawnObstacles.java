@@ -1,11 +1,11 @@
-package com.dobro.actions;
+package com.dobro.actions.spawn;
 
+import com.dobro.actions.SpawnProbability;
 import com.dobro.models.*;
 import com.dobro.service.Cell;
 import com.dobro.service.WorldMap;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class SpawnObstacles extends Spawn {

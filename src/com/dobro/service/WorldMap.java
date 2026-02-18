@@ -91,6 +91,16 @@ public class WorldMap {
         this.numberOfCoins = numberOfCoins;
     }
 
+//    public Optional<Cell> getCell(Entity entity) {
+//        for (Map.Entry<Cell,Entity> pieceOfMap : this.getEntities().entrySet()) {
+//            if (pieceOfMap.getValue().equals(entity)) {
+//                return Optional.of(pieceOfMap.getKey());
+//            }
+//        }
+//        return Optional.empty();
+//    }
+
+    //ofNullable - если пустая клетка -> может возвратить optional.isEmpty
     public Optional<? extends Entity> getEntity(Cell cell) {
         return Optional.ofNullable(this.getEntities().get(cell));
     }

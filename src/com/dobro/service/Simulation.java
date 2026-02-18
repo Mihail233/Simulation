@@ -1,6 +1,10 @@
 package com.dobro.service;
 
 import com.dobro.actions.*;
+import com.dobro.actions.spawn.SpawnCoin;
+import com.dobro.actions.spawn.SpawnCoinHunter;
+import com.dobro.actions.spawn.SpawnGhost;
+import com.dobro.actions.spawn.SpawnObstacles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +22,22 @@ public class Simulation {
         createAction();
     }
 
+    public void initSimulation() {
+        executeAction(initActions);
+        renderField.displayWorldMap(worldMap);
+    }
+
     public void nextTurn() {
         executeAction(turnActions);
+        renderField.displayWorldMap(worldMap);
     }
 
     public void startSimulation() {
-        executeAction(initActions);
-        renderField.displayWorldMap(worldMap);
+        initSimulation();
+        System.out.println();
+        nextTurn();
 //        System.out.println(worldMap.sumEntities());
 
-        //а потом попросить пользователя ввести существ(сумма существ < пустые поля)
 //        while (true) {
 //            nextTurn();
 ////            if (System.in.available() > 0) {
@@ -43,7 +53,8 @@ public class Simulation {
         initActions.add(new SpawnCoinHunter());
         initActions.add(new SpawnGhost());
 
-        //turnActions.add();
+        turnActions.add(new CreaturesMakeTurn());
+        //turnActions.add(new заextends от SpawnCoin() вызывать метод при определенных условиях);
     }
 
     public void pauseSimulation() {
