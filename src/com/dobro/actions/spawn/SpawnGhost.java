@@ -11,7 +11,8 @@ public class SpawnGhost extends SpawnCreature {
     public void execute(WorldMap worldMap) {
         Class<? extends Entity> clazz = SpawnDependency.GHOST.getClazz();
         float probability = SpawnProbability.GHOST.getProbability();
-        Ghost ghost = new Ghost();
+        int speed = 1;
+        Ghost ghost = new Ghost(speed);
         spawnCreature(worldMap, clazz, probability, ghost);
     }
 }

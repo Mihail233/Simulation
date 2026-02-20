@@ -10,13 +10,21 @@ import java.util.Map;
 public class CreaturesMakeTurn extends Action {
     @Override
     public void execute(WorldMap worldMap) {
-        for (Map.Entry<Cell, Entity> pieceOfMap: worldMap.getEntities().entrySet()) {
-            Entity entity = pieceOfMap.getValue();
+        Map<Cell, Entity> copyEntities = worldMap.getCopyEntities();
+        for (Map.Entry<Cell, Entity> copyPieceOfMap : copyEntities.entrySet()) {
+            Cell location = copyPieceOfMap.getKey();
+            if (!hasContainInMainMap(worldMap, location)) {
+                continue;
+            }
+            Entity entity = copyPieceOfMap.getValue();
             if (Creature.class.isAssignableFrom(entity.getClass())) {
                 Creature creature = (Creature) entity;
-                Cell location = pieceOfMap.getKey();
                 creature.makeTurn(location, worldMap);
             }
         }
+    }
+
+    public boolean hasContainInMainMap(WorldMap worldMap, Cell location) {
+        return worldMap.getEntities().containsKey(location);
     }
 }

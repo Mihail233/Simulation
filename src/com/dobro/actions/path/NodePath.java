@@ -1,49 +1,38 @@
 package com.dobro.actions.path;
 
 import com.dobro.service.Cell;
+import org.w3c.dom.Node;
 
 import java.util.Objects;
 
 public class NodePath {
     private Cell currentCell;
-    private Cell previousCell;
+    private NodePath previousNodePath;
     private Integer distance;
 
-    public NodePath(Cell currentCell, Cell previousCell) {
+    public NodePath(Cell currentCell, NodePath previousNodePath, int distance) {
         this.currentCell = currentCell;
-        this.previousCell = previousCell;
+        this.previousNodePath = previousNodePath;
+        this.distance = distance;
     }
 
     public Cell getCurrentCell() {
         return currentCell;
     }
 
-    public Cell getPreviousCell() {
-        return currentCell;
+    public NodePath getPreviousNodePath() {
+        return previousNodePath;
+    }
+
+    public int getDistance() {
+        return distance;
     }
 
     public void setCurrentCell(Cell currentCell) {
         this.currentCell = currentCell;
     }
 
-    public void setPreviousCell(Cell previousCell) {
-        this.previousCell = previousCell;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj == null || obj.getClass() != this.getClass()) {
-            return false;
-        }
-        NodePath NodePath = (NodePath) obj;
-        return (NodePath.getCurrentCell().equals(this.getCurrentCell()) && NodePath.getPreviousCell().equals(this.getPreviousCell()));
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getCurrentCell(), getPreviousCell());
+    public void setPreviousNodePath(NodePath previousNodePath) {
+        this.previousNodePath = previousNodePath;
     }
 }

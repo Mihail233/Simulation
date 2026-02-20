@@ -12,7 +12,8 @@ public class SpawnCoinHunter extends SpawnCreature {
     public void execute(WorldMap worldMap) {
         Class<? extends Entity> clazz = SpawnDependency.COIN_HUNTER.getClazz();
         float probability = SpawnProbability.COIN_HUNTER.getProbability();
-        CoinHunter coinHunter = new CoinHunter(new CoinHunterTurnStrategy(worldMap));
+        int speed = 1;
+        CoinHunter coinHunter = new CoinHunter(new CoinHunterTurnStrategy(), speed);
         spawnCreature(worldMap, clazz, probability, coinHunter);
     }
 }

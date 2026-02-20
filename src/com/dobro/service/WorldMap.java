@@ -3,6 +3,7 @@ package com.dobro.service;
 import com.dobro.models.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class WorldMap {
     private final static List<Cell> SHIFT_COORDINATES = List.of(new Cell(0, 1), new Cell(0, -1), new Cell(-1, 0), new Cell(1, 0));
@@ -91,14 +92,25 @@ public class WorldMap {
         this.numberOfCoins = numberOfCoins;
     }
 
-//    public Optional<Cell> getCell(Entity entity) {
-//        for (Map.Entry<Cell,Entity> pieceOfMap : this.getEntities().entrySet()) {
-//            if (pieceOfMap.getValue().equals(entity)) {
-//                return Optional.of(pieceOfMap.getKey());
-//            }
-//        }
-//        return Optional.empty();
-//    }
+    public Map<Cell, Entity> getCopyEntities() {
+        return Map.copyOf(
+                this.getEntities().entrySet().stream()
+                        .collect(Collectors.toMap(
+                                (pieceOfMap) -> {
+                                    Cell cell;
+                                    try {
+                                        cell = (Cell) pieceOfMap.getKey().clone();
+                                    } catch (CloneNotSupportedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    return cell;
+                                },
+                                Map.Entry::getValue
+                        ))
+        );
+
+
+    }
 
     //ofNullable - если пустая клетка -> может возвратить optional.isEmpty
     public Optional<? extends Entity> getEntity(Cell cell) {
@@ -116,6 +128,10 @@ public class WorldMap {
 
     public void setEntity(Cell cell, Entity entity) {
         this.getEntities().put(cell, entity);
+    }
+
+    public void removeEntity(Cell cell) {
+        this.getEntities().remove(cell);
     }
 
     public float getSpawnRate() {

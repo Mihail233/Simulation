@@ -7,19 +7,29 @@ import com.dobro.service.WorldMap;
 import java.util.*;
 
 public class Path {
+    private final int DEFAULT_DISTANCE = 0;
+    private final int DISTANCE_TO_NEIGHBOR = 1;
     private final WorldMap worldMap;
-    private final NodePath startingLocation;
-    private final NodePath endingLocation;
-    private final Set<NodePath> passedNodePath = new HashSet<>();
+    private final Cell startingLocation;
+    private final Cell endingLocation;
+    private final Set<Cell> passedCells = new HashSet<>();
     private final ArrayDeque<NodePath> unexaminedNodePath = new ArrayDeque<>();
     private final HashSet<Class<? extends Entity>> allowedPaths;
     private NodePath currentPath;
 
     public Path(WorldMap worldMap, Cell startingLocation, Cell endingLocation) {
         this.worldMap = worldMap;
-        this.startingLocation = new NodePath(startingLocation, startingLocation);
-        this.endingLocation = new NodePath(endingLocation, endingLocation);
+        this.startingLocation = startingLocation;
+        this.endingLocation = endingLocation;
         this.allowedPaths = new AllowedPathsProvider().getAllowedPaths();
+    }
+
+    public int getDistanceToNeighbor() {
+        return DISTANCE_TO_NEIGHBOR;
+    }
+
+    public NodePath getCurrentPath() {
+        return currentPath;
     }
 
     public void setCurrentPath(NodePath currentPath) {
@@ -28,7 +38,7 @@ public class Path {
 
     public boolean isPathFound() {
         this.reachEndingNode();
-        return currentPath.equals(endingLocation);
+        return isReachEndingCell();
     }
 
     public void reachEndingNode() {
@@ -39,21 +49,24 @@ public class Path {
     }
 
     public void initPath() {
-        setCurrentPath(startingLocation);
+        NodePath dummyNodePath = new NodePath(null, null, -1);
+        NodePath startingNodePath = new NodePath(startingLocation, dummyNodePath, 0);
+        setCurrentPath(startingNodePath);
         unexaminedNodePath.add(currentPath);
     }
 
     public void reachNodePath() {
-        setCurrentPath(unexaminedNodePath.removeFirst());
+        NodePath currentPath = unexaminedNodePath.removeFirst();
+        setCurrentPath(currentPath);
         ArrayList<NodePath> neighbors = getAllowedNeighboringNodePath();
         if (!neighbors.isEmpty()) {
             addNewNodePaths(neighbors);
         }
-        passedNodePath.add(currentPath);
+        passedCells.add(currentPath.getCurrentCell());
     }
 
     public boolean isReachEndingCell() {
-        return currentPath.getCurrentCell().equals(endingLocation.getCurrentCell());
+        return currentPath.getCurrentCell().equals(endingLocation);
     }
 
     public boolean isReachDeadEnd() {
@@ -69,17 +82,19 @@ public class Path {
         ArrayList<NodePath> allowedNeighboringNodePath = new ArrayList<>();
 
         for (Cell neighbor : neighbors) {
-            if (hasEndingLocation(neighbors) || isAllowed(neighbor)) {
-                NodePath nodePath = new NodePath(neighbor, currentPath.getCurrentCell());
-                if (!hasInPassedNodePath(nodePath)) {
-                    allowedNeighboringNodePath.add(nodePath);
-                }
+            if (hasAllowing(neighbor)) {
+                NodePath nodePath = new NodePath(neighbor, currentPath, currentPath.getDistance() + DISTANCE_TO_NEIGHBOR);
+                allowedNeighboringNodePath.add(nodePath);
             }
         }
         return allowedNeighboringNodePath;
     }
 
-    public boolean isAllowed(Cell neighbor) {
+    public boolean hasAllowing(Cell neighbor) {
+        return (hasEndingLocation(neighbor) || hasInAllowedPaths(neighbor)) && !hasInPassedCells(neighbor);
+    }
+
+    public boolean hasInAllowedPaths(Cell neighbor) {
         Optional<? extends Entity> entity = worldMap.getEntity(neighbor);
         if (entity.isPresent()) {
             Class<? extends Entity> clazz = worldMap.getEntities().get(neighbor).getClass();
@@ -88,11 +103,21 @@ public class Path {
         return true;
     }
 
-    public boolean hasEndingLocation(ArrayList<Cell> neighbors) {
-        return neighbors.contains(endingLocation.getCurrentCell());
+    public boolean hasEndingLocation(Cell neighbor) {
+        return neighbor.equals(endingLocation);
     }
 
-    public boolean hasInPassedNodePath(NodePath nodePath) {
-        return passedNodePath.contains(nodePath);
+    public boolean hasInPassedCells(Cell cell) {
+        return passedCells.contains(cell);
+    }
+
+    public Cell getCellDependingOnDistance(int intermediateDistance) {
+        NodePath nodePath = this.getCurrentPath();
+        while (true) {
+            if (intermediateDistance == nodePath.getDistance()) {
+                return nodePath.getCurrentCell();
+            }
+            nodePath = nodePath.getPreviousNodePath();
+        }
     }
 }

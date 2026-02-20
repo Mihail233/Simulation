@@ -2,13 +2,17 @@ package com.dobro.service;
 
 import java.util.Objects;
 
-public class Cell {
-    private final int x;
+public class Cell implements Cloneable {
+    private int x;
     private final int y;
 
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 
     public int getX() {
@@ -29,7 +33,6 @@ public class Cell {
         }
         Cell cell = (Cell) obj;
         return (cell.getX() == this.getX()) && (cell.getY() == this.getY());
-
     }
 
     @Override
@@ -37,4 +40,15 @@ public class Cell {
         return Objects.hash(getX(), getY());
     }
 
+    @Override
+    public String toString() {
+        return "Клетка " +
+                " x=" + this.getX() +
+                ", y="  + this.getY();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

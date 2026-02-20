@@ -5,7 +5,8 @@ import com.dobro.service.Cell;
 import com.dobro.service.WorldMap;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface TurnStrategy {
-    Map.Entry<Cell, Entity> getStrategy(Cell currentLocation, WorldMap worldMap);
+    Cell getStrategy(Cell currentLocation, int speed, WorldMap worldMap);
 }

@@ -35,7 +35,11 @@ public class Simulation {
     public void startSimulation() {
         initSimulation();
         System.out.println();
-        nextTurn();
+        int i = 2;
+        while (i > 0) {
+            nextTurn();
+            i--;
+        }
 //        System.out.println(worldMap.sumEntities());
 
 //        while (true) {
@@ -52,7 +56,6 @@ public class Simulation {
         initActions.add(new SpawnCoin());
         initActions.add(new SpawnCoinHunter());
         initActions.add(new SpawnGhost());
-
         turnActions.add(new CreaturesMakeTurn());
         //turnActions.add(new заextends от SpawnCoin() вызывать метод при определенных условиях);
     }
