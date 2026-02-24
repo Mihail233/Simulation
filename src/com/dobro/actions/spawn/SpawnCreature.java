@@ -7,10 +7,10 @@ import com.dobro.service.WorldMap;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public abstract class SpawnCreature extends Spawn {
-
-    public <T extends Entity> void spawnCreature(WorldMap worldMap, Class<? extends Entity> clazz, float probability, T creature) {
+    public <T extends Entity> void spawnCreature(WorldMap worldMap, Class<? extends Entity> clazz, float probability, Supplier<Entity> supplier) {
         ArrayList<Cell> previousSpawnLocations = worldMap.getCellsOfCertainType(clazz);
 
         for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
@@ -20,7 +20,7 @@ public abstract class SpawnCreature extends Spawn {
 
                 if (entity.isEmpty() && super.isPlaceEntity(worldMap.getSpawnRate(), probability)) {
                     if (hasConnectionWithAnyEntity(spawnLocation, previousSpawnLocations, worldMap)) {
-                        worldMap.setEntity(spawnLocation, creature);
+                        worldMap.setEntity(spawnLocation, supplier.get());
                         previousSpawnLocations.add(spawnLocation);
                     }
                 }

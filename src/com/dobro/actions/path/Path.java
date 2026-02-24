@@ -7,7 +7,6 @@ import com.dobro.service.WorldMap;
 import java.util.*;
 
 public class Path {
-    private final int DEFAULT_DISTANCE = 0;
     private final int DISTANCE_TO_NEIGHBOR = 1;
     private final WorldMap worldMap;
     private final Cell startingLocation;
@@ -28,7 +27,7 @@ public class Path {
         return DISTANCE_TO_NEIGHBOR;
     }
 
-    public NodePath getCurrentPath() {
+    public NodePath getCurrentNodePath() {
         return currentPath;
     }
 
@@ -111,13 +110,13 @@ public class Path {
         return passedCells.contains(cell);
     }
 
-    public Cell getCellDependingOnDistance(int intermediateDistance) {
-        NodePath nodePath = this.getCurrentPath();
+    public Cell getCellDependingOnDistance(int distanceToTarget) {
+        NodePath currentNodePath = this.getCurrentNodePath();
         while (true) {
-            if (intermediateDistance == nodePath.getDistance()) {
-                return nodePath.getCurrentCell();
+            if (distanceToTarget == currentNodePath.getDistance()) {
+                return currentNodePath.getCurrentCell();
             }
-            nodePath = nodePath.getPreviousNodePath();
+            currentNodePath = currentNodePath.getPreviousNodePath();
         }
     }
 }

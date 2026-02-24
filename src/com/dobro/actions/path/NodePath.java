@@ -6,9 +6,9 @@ import org.w3c.dom.Node;
 import java.util.Objects;
 
 public class NodePath {
+    private final Integer distance;
     private Cell currentCell;
     private NodePath previousNodePath;
-    private Integer distance;
 
     public NodePath(Cell currentCell, NodePath previousNodePath, int distance) {
         this.currentCell = currentCell;

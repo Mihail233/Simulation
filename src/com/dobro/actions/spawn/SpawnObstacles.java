@@ -1,7 +1,10 @@
 package com.dobro.actions.spawn;
 
 import com.dobro.actions.SpawnProbability;
-import com.dobro.models.*;
+import com.dobro.models.Candle;
+import com.dobro.models.Entity;
+import com.dobro.models.Rock;
+import com.dobro.models.Vase;
 import com.dobro.service.Cell;
 import com.dobro.service.WorldMap;
 

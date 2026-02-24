@@ -42,9 +42,8 @@ public class Cell implements Cloneable {
 
     @Override
     public String toString() {
-        return "Клетка " +
-                " x=" + this.getX() +
-                ", y="  + this.getY();
+        return "x = " + this.getX() +
+                ", y = "  + this.getY();
     }
 
     @Override
