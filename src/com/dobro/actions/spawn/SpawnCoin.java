@@ -1,6 +1,5 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.actions.SpawnProbability;
 import com.dobro.actions.path.Path;
 import com.dobro.models.Coin;
 import com.dobro.models.Entity;

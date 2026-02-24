@@ -1,6 +1,5 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.actions.SpawnProbability;
 import com.dobro.models.Candle;
 import com.dobro.models.Entity;
 import com.dobro.models.Rock;

@@ -23,10 +23,6 @@ public class Path {
         this.allowedPaths = new AllowedPathsProvider().getAllowedPaths();
     }
 
-    public int getDistanceToNeighbor() {
-        return DISTANCE_TO_NEIGHBOR;
-    }
-
     public NodePath getCurrentNodePath() {
         return currentPath;
     }

@@ -1,9 +1,6 @@
 package com.dobro.actions.path;
 
 import com.dobro.service.Cell;
-import org.w3c.dom.Node;
-
-import java.util.Objects;
 
 public class NodePath {
     private final Integer distance;

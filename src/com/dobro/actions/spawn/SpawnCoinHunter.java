@@ -1,12 +1,10 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.actions.SpawnProbability;
 import com.dobro.actions.strategy.CoinHunterTurnStrategy;
-import com.dobro.actions.strategy.GhostTurnStrategy;
 import com.dobro.models.CoinHunter;
 import com.dobro.models.Entity;
-import com.dobro.models.Ghost;
 import com.dobro.service.WorldMap;
+
 import java.util.function.Supplier;
 
 

@@ -37,6 +37,7 @@ public class RenderField {
             }
             System.out.println("⬛");
         }
-        System.out.print("⬛ ".repeat(worldMap.getMaxLengthField() + 2));
+        System.out.println("⬛ ".repeat(worldMap.getMaxLengthField() + 2));
+        System.out.printf("Собранные монеты %d\n", CoinHunter.numberOfCoinsCollected);
     }
 }

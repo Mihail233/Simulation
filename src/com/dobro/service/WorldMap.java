@@ -176,4 +176,8 @@ public class WorldMap {
         boolean isOutsideBottomBorder = cell.getY() >= this.getMaxWidthField();
         return isOutsideLeftBorder || isOutsideRightBorder || isOutsideTop || isOutsideBottomBorder;
     }
+
+    public boolean hasEntity(Class<? extends Entity> clazz) {
+        return !this.getCellsOfCertainType(clazz).isEmpty();
+    }
 }

@@ -1,8 +1,8 @@
 package com.dobro.actions.spawn;
 
+import com.dobro.models.Coin;
 import com.dobro.models.CoinHunter;
 import com.dobro.models.Entity;
-import com.dobro.models.Coin;
 
 public enum SpawnDependency {
     COIN(Coin.class),

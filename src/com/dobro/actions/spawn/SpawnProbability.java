@@ -1,10 +1,10 @@
-package com.dobro.actions;
+package com.dobro.actions.spawn;
 
 public enum SpawnProbability {
-    OBSTACLE( 0.18f),
-    COIN(0.04f),
-    COIN_HUNTER(0.03f),
-    GHOST(0.03f);
+    OBSTACLE(0.18f),
+    COIN(0.03f),
+    COIN_HUNTER(0.04f),
+    GHOST(0.02f);
 
     private final float probability;
 
