@@ -11,12 +11,12 @@ public class CreaturesMakeTurn extends Action {
     @Override
     public void execute(WorldMap worldMap) {
         Map<Cell, Entity> copyEntities = worldMap.getCopyEntities();
-        for (Map.Entry<Cell, Entity> copyPieceOfMap : copyEntities.entrySet()) {
-            Cell location = copyPieceOfMap.getKey();
+        for (Map.Entry<Cell, Entity> copyPieceOfWorldMap : copyEntities.entrySet()) {
+            Cell location = copyPieceOfWorldMap.getKey();
             if (!hasContainInMainMap(worldMap, location)) {
                 continue;
             }
-            Entity entity = copyPieceOfMap.getValue();
+            Entity entity = copyPieceOfWorldMap.getValue();
             if (Creature.class.isAssignableFrom(entity.getClass())) {
                 Creature creature = (Creature) entity;
                 creature.makeTurn(location, worldMap);

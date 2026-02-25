@@ -1,10 +1,10 @@
 package com.dobro.service;
 
-//for graniteBlockPicture [*], ⬛, ⬜, ◻️
-
 import com.dobro.models.*;
 
 import java.util.Optional;
+
+import static com.dobro.models.CoinHunter.getNumberOfCoinsCollected;
 
 public class RenderField {
     private final String ghostPicture = "\uD83D\uDC7B ";
@@ -14,11 +14,12 @@ public class RenderField {
     private final String rockPicture = "️\uD83E\uDEA8 ";
     private final String vasePicture = "\uD83C\uDFFA ";
     private final String graniteBlockPicture = "◻\uFE0F  ";
+    private final String blockBorder = "⬛ ";
 
     public void displayWorldMap(WorldMap worldMap) {
-        System.out.println("⬛ ".repeat(worldMap.getMaxLengthField() + 2));
+        printHorizontalBorder(worldMap.getMaxLengthField());
         for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
-            System.out.print("⬛ ");
+            printPartOfVerticalBorder();
             for (int indexColumn = worldMap.getOriginWorldMap().getX(); indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
                 Optional<? extends Entity> entity = worldMap.getEntity(new Cell(indexRow, indexColumn));
                 entity.ifPresentOrElse((presentEntity) -> {
@@ -35,9 +36,20 @@ public class RenderField {
                         () -> System.out.print(graniteBlockPicture)
                 );
             }
-            System.out.println("⬛");
+            printPartOfVerticalBorder();
+            System.out.println();
         }
-        System.out.println("⬛ ".repeat(worldMap.getMaxLengthField() + 2));
-        System.out.printf("Собранные монеты %d\n", CoinHunter.numberOfCoinsCollected);
+        printHorizontalBorder(worldMap.getMaxLengthField());
+        System.out.printf("Собранные монеты %d\n", getNumberOfCoinsCollected());
+    }
+
+    public void printHorizontalBorder(int lengthField) {
+        int lengthOfSideBorders = 2;
+        String horizontalBorder = blockBorder.repeat(lengthField + lengthOfSideBorders);
+        System.out.printf("%s \n", horizontalBorder);
+    }
+
+    public void printPartOfVerticalBorder() {
+        System.out.printf("%s", blockBorder);
     }
 }

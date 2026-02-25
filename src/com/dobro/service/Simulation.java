@@ -10,34 +10,56 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dobro.models.CoinHunter.getNumberOfCoinsCollected;
+
 public class Simulation {
-    private boolean paused = true;
-    private final Object monitor = new Object();
+    private static final char PAUSE = '1';
+    private static final char CONTINUE = '2';
+    private static final int SIMULATION_FREQUENCY = 1000;
+    private final WorldMap worldMap;
+    private final RenderField renderField = new RenderField();
     private final List<Action> initActions = new ArrayList<>();
     private final List<Action> turnActions = new ArrayList<>();
-    private RenderField renderField = new RenderField();
-    private WorldMap worldMap;
-    private char inputUser = 'q';
+    private final Object monitor = new Object();
+    private boolean paused;
+    private char inputUser;
 
     public Simulation(WorldMap worldMap) {
         this.worldMap = worldMap;
-        createAction();
     }
 
-    public void initSimulation() throws InterruptedException {
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+    }
+
+    public void startSimulation() {
+        initSimulation();
+        setPaused(false);
+        while (hasStruggleForExistence()) {
+            nextTurn();
+        }
+        printResult();
+        System.exit(0);
+    }
+
+    public void initSimulation() {
+        setPaused(true);
         clearConsole();
+        createAction();
         initStreamInput();
         executeAction(initActions);
+        System.out.println("Стартовая расстановка");
         renderField.displayWorldMap(worldMap);
-
         printAnswerOptionsDuringPause();
-        lockFlow();
+        lockMainFlow();
         clearConsole();
     }
 
-    //первый поток работает, останавливается в этот момент получаются данные из потока на 1000мс, потом поток 2 замораживается
-    public void nextTurn() throws InterruptedException {
-        //новый круг
+    public boolean hasStruggleForExistence() {
+        return worldMap.hasEntity(CoinHunter.class) && worldMap.hasEntity(Ghost.class);
+    }
+
+    public void nextTurn() {
         executeAction(turnActions);
         renderField.displayWorldMap(worldMap);
         if (paused) {
@@ -45,22 +67,17 @@ public class Simulation {
         } else {
             printAnswerOptionsDuringSimulation();
         }
-        lockFlow();
+        lockMainFlow();
         clearConsole();
     }
 
-    public void startSimulation() throws InterruptedException, IOException {
-        initSimulation();
-        paused = false;
-        while (worldMap.hasEntity(CoinHunter.class) && worldMap.hasEntity(Ghost.class)) {
-            nextTurn();
-        }
+    public void printResult() {
         System.out.println("Игра закончилась");
-        System.exit(0);
+        System.out.printf("Количество собранных монет %d \n", getNumberOfCoinsCollected());
     }
 
     public void createAction() {
-        initActions.add(new SpawnObstacles());
+        initActions.add(new SpawnObstacle());
         initActions.add(new SpawnCoin());
         initActions.add(new SpawnCoinHunter());
         initActions.add(new SpawnGhost());
@@ -78,24 +95,22 @@ public class Simulation {
         System.out.print("\033[H\033[J");
     }
 
-    public void printAnswerOptionsDuringPause() {
-        System.out.println("Введите цифру: ");
-        System.out.println("2 - продолжить симуляцию");
-    }
-
     public void printAnswerOptionsDuringSimulation() {
         System.out.println("Введите цифру: ");
-        System.out.println("1 - поставить паузу");
+        System.out.printf("%s - поставить паузу\n", PAUSE);
     }
 
-    public void lockFlow() throws InterruptedException {
-        //не может продолжить пока монитор у другого потока
+    public void printAnswerOptionsDuringPause() {
+        System.out.println("Введите цифру: ");
+        System.out.printf("%s - продолжить симуляцию\n", CONTINUE);
+    }
+
+    public void lockMainFlow() {
         synchronized (monitor) {
             changeMonitor();
         }
     }
 
-    //симуляция может быть на паузе и мы ждем ответ пользователя бесконечно или не на паузе и ждем ответ пользователя несколько секунд
     public void initStreamInput() {
         new Thread(() -> {
             try {
@@ -105,7 +120,7 @@ public class Simulation {
                             getInputFromUser();
                             continueSimulation();
                         } else {
-                            Thread.sleep(1000);
+                            Thread.sleep(SIMULATION_FREQUENCY);
                             getInputFromUser();
                             pauseSimulation();
                         }
@@ -118,27 +133,32 @@ public class Simulation {
     }
 
     public void getInputFromUser() throws IOException {
-        if (System.in.available() > 0) {
+        int missingValue = 0;
+        if (System.in.available() > missingValue) {
             inputUser = (char) System.in.read();
             System.in.skip(System.in.available());
         }
     }
 
-    public void changeMonitor() throws InterruptedException {
-        monitor.notify();
-        monitor.wait();
+    public void changeMonitor() {
+        try {
+            monitor.notify();
+            monitor.wait();
+        } catch (InterruptedException e) {
+            throw new RuntimeException("Вмешательство в работу потока");
+        }
     }
 
-    public void pauseSimulation() throws InterruptedException {
-        if (inputUser == (int) '1') {
-            paused = true;
+    public void pauseSimulation() {
+        if (inputUser == (int) PAUSE) {
+            setPaused(true);
         }
         changeMonitor();
     }
 
-    public void continueSimulation() throws InterruptedException {
-        if (inputUser == (int) '2') {
-            paused = false;
+    public void continueSimulation() {
+        if (inputUser == (int) CONTINUE) {
+            setPaused(false);
             changeMonitor();
         }
     }

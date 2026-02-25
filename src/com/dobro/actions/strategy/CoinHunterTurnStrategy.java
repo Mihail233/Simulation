@@ -16,9 +16,8 @@ public class CoinHunterTurnStrategy implements TurnStrategy {
     public CoinHunterTurnStrategy() {
         InteractionCellFinder = new InteractionCellFinder();
     }
-    //просто сделать преоритет на if(например, размножение существ выше чем получение ближайшей монеты и потом просто return)
-    //возращается либо клетка(внутри либо entity, либо пусто), либо возращается Optional.empty
 
+    //можно сделать преоритет (например, размножение существ выше чем получение ближайшей монеты)
     @Override
     public <T extends Creature> Optional<Cell> getInteractionCell(Cell location, T entity, WorldMap worldMap) {
         return InteractionCellFinder.getInteractionCell(location, entity, worldMap, coinTargetClass);

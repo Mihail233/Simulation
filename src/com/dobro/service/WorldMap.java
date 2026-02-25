@@ -1,6 +1,6 @@
 package com.dobro.service;
 
-import com.dobro.models.*;
+import com.dobro.models.Entity;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,16 +13,12 @@ public class WorldMap {
     private float spawnRate;
     private int maxWidthField;
     private int maxLengthField;
-    private int numberOfGhosts;
-    private int numberOfPeople;
-    private int numberOfCoins;
 
     public WorldMap() {
         initWorldMap();
     }
 
     public void initWorldMap() {
-
         System.out.println("Введите начальные параметры");
         System.out.println("Введите длину поля");
         setMaxLengthField();
@@ -68,38 +64,14 @@ public class WorldMap {
         return originWorldMap;
     }
 
-    public int getNumberOfGhosts() {
-        return numberOfGhosts;
-    }
-
-    public void setNumberOfGhosts(int numberOfGhosts) {
-        this.numberOfGhosts = numberOfGhosts;
-    }
-
-    public int getNumberOfPeople() {
-        return numberOfPeople;
-    }
-
-    public void setNumberOfPeople(int numberOfPeople) {
-        this.numberOfPeople = numberOfPeople;
-    }
-
-    public int getNumberOfCoins() {
-        return numberOfCoins;
-    }
-
-    public void setNumberOfCoins(int numberOfCoins) {
-        this.numberOfCoins = numberOfCoins;
-    }
-
     public Map<Cell, Entity> getCopyEntities() {
         return Map.copyOf(
                 this.getEntities().entrySet().stream()
                         .collect(Collectors.toMap(
-                                (pieceOfMap) -> {
+                                (pieceOfWorldMap) -> {
                                     Cell cell;
                                     try {
-                                        cell = (Cell) pieceOfMap.getKey().clone();
+                                        cell = (Cell) pieceOfWorldMap.getKey().clone();
                                     } catch (CloneNotSupportedException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -108,21 +80,13 @@ public class WorldMap {
                                 Map.Entry::getValue
                         ))
         );
-
-
     }
 
-    //ofNullable - если пустая клетка -> может возвратить optional.isEmpty
     public Optional<? extends Entity> getEntity(Cell cell) {
         return Optional.ofNullable(this.getEntities().get(cell));
     }
 
-//    public boolean isEmptyCell(Cell cell) {
-//        return !this.getEntities().containsKey(cell);
-//    }
-
     public HashMap<Cell, Entity> getEntities() {
-        //возвращать надо копию
         return entities;
     }
 
@@ -138,26 +102,15 @@ public class WorldMap {
         return spawnRate;
     }
 
-//    public int sumEntities() {
-//        int sum = 0;
-//        for (Map.Entry<Cell, Entity> entry : entities.entrySet()) {
-//            if (!isEmptyCell(entry.getKey())) {
-//                sum += 1;
-//            }
-//        }
-//        return sum;
-//    }
-
     public ArrayList<Cell> getCellsOfCertainType(Class<? extends Entity> clazz) {
         ArrayList<Cell> cells = new ArrayList<>();
-        for (Map.Entry<Cell, Entity> pieceOfMap : this.getEntities().entrySet()) {
-            if (pieceOfMap.getValue().getClass().equals(clazz)) {
-                cells.add(pieceOfMap.getKey());
+        for (Map.Entry<Cell, Entity> pieceOfWorldMap : this.getEntities().entrySet()) {
+            if (pieceOfWorldMap.getValue().getClass().equals(clazz)) {
+                cells.add(pieceOfWorldMap.getKey());
             }
         }
         return cells;
     }
-
 
     public ArrayList<Cell> getNeighbors(Cell cell) {
         ArrayList<Cell> neighbors = new ArrayList<>();

@@ -8,10 +8,10 @@ public class AllowedPathsProvider {
     private final HashSet <Class<? extends Entity>> allowedPaths = new HashSet<>();
 
     public AllowedPathsProvider() {
-        createAllowingPaths();
+        createAllowedPaths();
     }
 
-    public void createAllowingPaths() {
+    public void createAllowedPaths() {
         for (AllowedPath allowedPath: AllowedPath.values()) {
             allowedPaths.add(allowedPath.getClazz());
         }
@@ -19,9 +19,5 @@ public class AllowedPathsProvider {
 
     public HashSet <Class<? extends Entity>> getAllowedPaths() {
         return allowedPaths;
-    }
-
-    public void addAllowedPath(Class<? extends Entity> allowedPath) {
-        this.allowedPaths.add(allowedPath);
     }
 }

@@ -1,10 +1,8 @@
 package com.dobro.service;
 
-import java.io.IOException;
-
 public class Main {
 
-    static void main(String[] args) throws InterruptedException, IOException {
+    static void main(String[] args) {
         WorldMap worldMap = new WorldMap();
         Simulation simulation = new Simulation(worldMap);
         simulation.startSimulation();

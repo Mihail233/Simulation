@@ -19,10 +19,13 @@ abstract public class Creature extends Entity {
     public abstract void makeTurn(Cell location, WorldMap worldMap);
 
     public void makeMove(Cell location, Cell nextLocation, WorldMap worldMap) {
-        System.out.printf("Существо %s переместилось на %s", location, nextLocation);
         Optional<? extends Entity> entity = worldMap.getEntity(location);
-        worldMap.removeEntity(location);
-        worldMap.setEntity(nextLocation, entity.get());
+        entity.ifPresentOrElse(presentEntity -> {
+                    worldMap.removeEntity(location);
+                    worldMap.setEntity(nextLocation, presentEntity);
+                    System.out.printf("Существо %s переместилось на %s", location, nextLocation);
+                }, () -> System.out.printf("Существо %s не переместилось на %s", location, nextLocation)
+        );
     }
 
     public int getInteractionDistance() {

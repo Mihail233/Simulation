@@ -6,7 +6,8 @@ import com.dobro.service.WorldMap;
 public class SpawnExtraCoin extends SpawnCoin {
     @Override
     public void execute(WorldMap worldMap) {
-        if (worldMap.getCellsOfCertainType(Coin.class).size() < 2) {
+        int remainingEntities = 2;
+        if (worldMap.getCellsOfCertainType(Coin.class).size() < remainingEntities) {
             super.execute(worldMap);
         }
     }

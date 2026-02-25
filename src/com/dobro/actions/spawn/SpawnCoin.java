@@ -14,7 +14,6 @@ public class SpawnCoin extends Spawn {
     @Override
     public void execute(WorldMap worldMap) {
         ArrayList<Cell> previousSpawnLocations = worldMap.getCellsOfCertainType(SpawnDependency.COIN.getClazz());
-
         for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
             for (int indexColumn = worldMap.getOriginWorldMap().getX(); indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
                 Cell spawnLocation = new Cell(indexRow, indexColumn);

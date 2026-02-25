@@ -7,7 +7,7 @@ import com.dobro.service.WorldMap;
 import java.util.*;
 
 public class Path {
-    private final int DISTANCE_TO_NEIGHBOR = 1;
+    private final static int DISTANCE_TO_NEIGHBOR = 1;
     private final WorldMap worldMap;
     private final Cell startingLocation;
     private final Cell endingLocation;
@@ -33,12 +33,12 @@ public class Path {
 
     public boolean isPathFound() {
         this.reachEndingNode();
-        return isReachEndingCell();
+        return isReachEndingLocation();
     }
 
     public void reachEndingNode() {
         initPath();
-        while (!isReachDeadEnd() && !isReachEndingCell()) {
+        while (!isAllCellsPassed() && !isReachEndingLocation()) {
             reachNodePath();
         }
     }
@@ -53,18 +53,18 @@ public class Path {
     public void reachNodePath() {
         NodePath currentPath = unexaminedNodePath.removeFirst();
         setCurrentPath(currentPath);
-        ArrayList<NodePath> neighbors = getAllowedNeighboringNodePath();
-        if (!neighbors.isEmpty()) {
-            addNewNodePaths(neighbors);
+        ArrayList<NodePath> allowedNeighboringNodePath = getAllowedNeighboringNodePath();
+        if (!allowedNeighboringNodePath.isEmpty()) {
+            addNewNodePaths(allowedNeighboringNodePath);
         }
         passedCells.add(currentPath.getCurrentCell());
     }
 
-    public boolean isReachEndingCell() {
+    public boolean isReachEndingLocation() {
         return currentPath.getCurrentCell().equals(endingLocation);
     }
 
-    public boolean isReachDeadEnd() {
+    public boolean isAllCellsPassed() {
         return unexaminedNodePath.isEmpty();
     }
 

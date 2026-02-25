@@ -25,7 +25,6 @@ public class InteractionCellFinder {
         int distanceToTarget = pathToNearestTarget.getCurrentNodePath().getDistance();
 
         if (distanceToTarget <= interactionDistance) {
-            //если брать interactionDistance - можно получить несуществующую клетку, ведь путь проложен только до distanceToTarget, но не до interactionDistance
             return pathToNearestTarget.getCellDependingOnDistance(distanceToTarget);
 
         } else if (distanceToTarget == speed) {

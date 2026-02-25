@@ -7,8 +7,8 @@ import com.dobro.service.WorldMap;
 import java.util.Optional;
 
 public class Ghost extends Creature {
-    private TurnStrategy turnStrategy;
-    private int attack;
+    private final TurnStrategy turnStrategy;
+    private final int attack;
 
     public Ghost(TurnStrategy turnStrategy) {
         int interactionDistance = 1;
@@ -34,7 +34,7 @@ public class Ghost extends Creature {
                                         }
                                     }
                                     case Ghost ghost ->
-                                            System.out.printf("встретило ghost %s, ход будет пропущен", presentInteractionCell);
+                                            System.out.printf("встретил ghost %s, ход будет пропущен", presentInteractionCell);
                                     default -> System.out.print("Неизвестная стратегия");
                                 }
                             },
@@ -44,8 +44,8 @@ public class Ghost extends Creature {
         System.out.println();
     }
 
-    public <T extends Creature> void hitEntity(Cell locationCoinHunter, T entity) {
+    public <T extends Creature> void hitEntity(Cell location, T entity) {
         entity.setHealthPoints(entity.getHealthPoints() - attack);
-        System.out.printf("ударил coinHunter %s на %d\n", locationCoinHunter, attack);
+        System.out.printf("ударил coinHunter %s на %d\n", location, attack);
     }
 }
