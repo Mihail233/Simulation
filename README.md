@@ -24,4 +24,5 @@
 
 Пример карты:
 
-<img width="500" height="336" alt="Снимок экрана 2026-02-25 154116" src="https://github.com/user-attachments/assets/af183dba-ef60-4cff-a1ed-d0ee35863860" />
+<img width="498" height="394" alt="Снимок экрана 2026-02-25 в 15 54 19" src="https://github.com/user-attachments/assets/3fa95389-2f48-4189-98ca-743c2efd92e6" />
+
