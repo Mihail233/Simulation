@@ -35,7 +35,7 @@ public class WorldMap {
                 10 — максимально сложный, большое количество препятсвий
                 """
         );
-        spawnRate = (scanner.nextFloat() + 3.5f) / 4.5f;
+        spawnRate = (0.125f * scanner.nextFloat() + 0.875f);
     }
 
     public int getMaxLengthField() {
