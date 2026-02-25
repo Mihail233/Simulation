@@ -26,3 +26,5 @@
 
 <img width="498" height="394" alt="Снимок экрана 2026-02-25 в 15 54 19" src="https://github.com/user-attachments/assets/3fa95389-2f48-4189-98ca-743c2efd92e6" />
 
+<img width="438" height="393" alt="Снимок экрана 2026-02-25 в 15 55 55" src="https://github.com/user-attachments/assets/8d21681a-1fe7-47ef-9b3c-e28ef280f3fa" />
+
