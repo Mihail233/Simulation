@@ -1,6 +1,6 @@
-package com.dobro.actions.path;
+package com.dobro.path;
 
-import com.dobro.service.Cell;
+import com.dobro.Cell;
 
 public class NodePath {
     private final Integer distance;

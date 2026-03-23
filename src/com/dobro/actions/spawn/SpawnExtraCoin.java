@@ -1,7 +1,7 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.models.Coin;
-import com.dobro.service.WorldMap;
+import com.dobro.entity.Coin;
+import com.dobro.WorldMap;
 
 public class SpawnExtraCoin extends SpawnCoin {
     @Override

@@ -1,9 +1,9 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.actions.strategy.CoinHunterTurnStrategy;
-import com.dobro.models.CoinHunter;
-import com.dobro.models.Entity;
-import com.dobro.service.WorldMap;
+import com.dobro.strategy.CoinHunterTurnStrategy;
+import com.dobro.entity.CoinHunter;
+import com.dobro.entity.Entity;
+import com.dobro.WorldMap;
 
 import java.util.function.Supplier;
 

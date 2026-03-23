@@ -1,8 +1,8 @@
-package com.dobro.actions.path;
+package com.dobro.path;
 
-import com.dobro.models.Entity;
-import com.dobro.service.Cell;
-import com.dobro.service.WorldMap;
+import com.dobro.entity.Entity;
+import com.dobro.Cell;
+import com.dobro.WorldMap;
 
 import java.util.*;
 

@@ -1,10 +1,10 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.actions.path.Path;
-import com.dobro.models.Coin;
-import com.dobro.models.Entity;
-import com.dobro.service.Cell;
-import com.dobro.service.WorldMap;
+import com.dobro.path.Path;
+import com.dobro.entity.Coin;
+import com.dobro.entity.Entity;
+import com.dobro.Cell;
+import com.dobro.WorldMap;
 
 import java.util.ArrayList;
 import java.util.Optional;

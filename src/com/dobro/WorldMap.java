@@ -1,6 +1,6 @@
-package com.dobro.service;
+package com.dobro;
 
-import com.dobro.models.Entity;
+import com.dobro.entity.Entity;
 
 import java.util.*;
 import java.util.stream.Collectors;

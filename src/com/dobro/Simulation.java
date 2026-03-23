@@ -1,16 +1,16 @@
-package com.dobro.service;
+package com.dobro;
 
 import com.dobro.actions.Action;
 import com.dobro.actions.CreaturesMakeTurn;
 import com.dobro.actions.spawn.*;
-import com.dobro.models.CoinHunter;
-import com.dobro.models.Ghost;
+import com.dobro.entity.CoinHunter;
+import com.dobro.entity.Ghost;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.dobro.models.CoinHunter.getNumberOfCoinsCollected;
+import static com.dobro.entity.CoinHunter.getNumberOfCoinsCollected;
 
 public class Simulation {
     private static final char PAUSE = '1';
@@ -97,12 +97,12 @@ public class Simulation {
 
     public void printAnswerOptionsDuringSimulation() {
         System.out.println("Введите цифру: ");
-        System.out.printf("%s - поставить паузу\n", PAUSE);
+        System.out.printf("%s - Поставить паузу\n", PAUSE);
     }
 
     public void printAnswerOptionsDuringPause() {
         System.out.println("Введите цифру: ");
-        System.out.printf("%s - продолжить симуляцию\n", CONTINUE);
+        System.out.printf("%s - Продолжить симуляцию\n", CONTINUE);
     }
 
     public void lockMainFlow() {

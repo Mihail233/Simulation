@@ -1,4 +1,4 @@
-package com.dobro.service;
+package com.dobro;
 
 public class Main {
 

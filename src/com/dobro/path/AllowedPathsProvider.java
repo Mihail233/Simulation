@@ -1,6 +1,6 @@
-package com.dobro.actions.path;
+package com.dobro.path;
 
-import com.dobro.models.*;
+import com.dobro.entity.*;
 
 import java.util.HashSet;
 

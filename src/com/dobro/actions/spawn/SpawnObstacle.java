@@ -1,11 +1,11 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.models.Candle;
-import com.dobro.models.Entity;
-import com.dobro.models.Rock;
-import com.dobro.models.Vase;
-import com.dobro.service.Cell;
-import com.dobro.service.WorldMap;
+import com.dobro.entity.Candle;
+import com.dobro.entity.Entity;
+import com.dobro.entity.Rock;
+import com.dobro.entity.Vase;
+import com.dobro.Cell;
+import com.dobro.WorldMap;
 
 import java.util.List;
 import java.util.function.Supplier;

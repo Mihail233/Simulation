@@ -1,7 +1,7 @@
-package com.dobro.models;
+package com.dobro.entity;
 
-import com.dobro.service.Cell;
-import com.dobro.service.WorldMap;
+import com.dobro.Cell;
+import com.dobro.WorldMap;
 
 import java.util.Optional;
 

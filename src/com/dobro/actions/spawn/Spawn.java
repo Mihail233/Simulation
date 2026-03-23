@@ -1,7 +1,7 @@
 package com.dobro.actions.spawn;
 
 import com.dobro.actions.Action;
-import com.dobro.service.WorldMap;
+import com.dobro.WorldMap;
 
 abstract public class Spawn extends Action {
     public abstract void execute(WorldMap worldMap);

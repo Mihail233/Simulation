@@ -1,10 +1,10 @@
-package com.dobro.service;
+package com.dobro;
 
-import com.dobro.models.*;
+import com.dobro.entity.*;
 
 import java.util.Optional;
 
-import static com.dobro.models.CoinHunter.getNumberOfCoinsCollected;
+import static com.dobro.entity.CoinHunter.getNumberOfCoinsCollected;
 
 public class RenderField {
     private final String ghostPicture = "\uD83D\uDC7B ";

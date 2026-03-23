@@ -1,4 +1,4 @@
-package com.dobro.models;
+package com.dobro.entity;
 
 abstract public class Entity {
     private int x;

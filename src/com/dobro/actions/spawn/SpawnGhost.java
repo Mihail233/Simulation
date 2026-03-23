@@ -1,9 +1,9 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.actions.strategy.GhostTurnStrategy;
-import com.dobro.models.Entity;
-import com.dobro.models.Ghost;
-import com.dobro.service.WorldMap;
+import com.dobro.strategy.GhostTurnStrategy;
+import com.dobro.entity.Entity;
+import com.dobro.entity.Ghost;
+import com.dobro.WorldMap;
 
 import java.util.function.Supplier;
 

@@ -1,8 +1,8 @@
-package com.dobro.models;
+package com.dobro.entity;
 
-import com.dobro.actions.strategy.TurnStrategy;
-import com.dobro.service.Cell;
-import com.dobro.service.WorldMap;
+import com.dobro.strategy.TurnStrategy;
+import com.dobro.Cell;
+import com.dobro.WorldMap;
 
 import java.util.Optional;
 

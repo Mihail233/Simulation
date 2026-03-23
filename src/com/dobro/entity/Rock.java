@@ -1,4 +1,4 @@
-package com.dobro.models;
+package com.dobro.entity;
 
 public class Rock extends Entity {
 }

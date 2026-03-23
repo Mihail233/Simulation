@@ -1,8 +1,8 @@
-package com.dobro.actions.strategy;
+package com.dobro.strategy;
 
-import com.dobro.models.Creature;
-import com.dobro.service.Cell;
-import com.dobro.service.WorldMap;
+import com.dobro.entity.Creature;
+import com.dobro.Cell;
+import com.dobro.WorldMap;
 
 import java.util.Optional;
 
