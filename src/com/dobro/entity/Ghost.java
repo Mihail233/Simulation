@@ -30,7 +30,7 @@ public class Ghost extends Creature {
                                     case CoinHunter coinHunter -> {
                                         hitEntity(presentInteractionCell, coinHunter);
                                         if (coinHunter.getHealthPoints() < 1) {
-                                            initDeath(presentInteractionCell, worldMap);
+                                            kill(presentInteractionCell, worldMap);
                                         }
                                     }
                                     case Ghost ghost ->
@@ -40,7 +40,7 @@ public class Ghost extends Creature {
                             },
                             () -> super.makeMove(location, presentInteractionCell, worldMap));
                 },
-                () -> System.out.printf("сущность для взаимодействия не найдено %s ", location));
+                () -> System.out.printf("сущность для взаимодействия не найдено " + location));
         System.out.println();
     }
 

@@ -44,8 +44,8 @@ abstract public class Creature extends Entity {
         return healthPoints;
     }
 
-    public void initDeath(Cell location, WorldMap worldMap) {
+    public void kill(Cell location, WorldMap worldMap) {
         worldMap.removeEntity(location);
-        System.out.printf("Существо умерло %s", location);
+        System.out.printf("Существо умерло "+  location);
     }
 }

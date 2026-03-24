@@ -1,5 +1,6 @@
 package com.dobro.path;
 
+import com.dobro.WorldMapUtils;
 import com.dobro.entity.Entity;
 import com.dobro.Cell;
 import com.dobro.WorldMap;
@@ -13,7 +14,7 @@ public class Path {
     private final Cell endingLocation;
     private final Set<Cell> passedCells = new HashSet<>();
     private final ArrayDeque<NodePath> unexaminedNodePath = new ArrayDeque<>();
-    private final HashSet<Class<? extends Entity>> allowedPaths;
+    private final Set<Class<? extends Entity>> allowedPaths;
     private NodePath currentPath;
 
     public Path(WorldMap worldMap, Cell startingLocation, Cell endingLocation) {
@@ -53,7 +54,7 @@ public class Path {
     public void reachNodePath() {
         NodePath currentPath = unexaminedNodePath.removeFirst();
         setCurrentPath(currentPath);
-        ArrayList<NodePath> allowedNeighboringNodePath = getAllowedNeighboringNodePath();
+        List<NodePath> allowedNeighboringNodePath = getAllowedNeighboringNodePath();
         if (!allowedNeighboringNodePath.isEmpty()) {
             addNewNodePaths(allowedNeighboringNodePath);
         }
@@ -68,13 +69,13 @@ public class Path {
         return unexaminedNodePath.isEmpty();
     }
 
-    public void addNewNodePaths(ArrayList<NodePath> neighbors) {
+    public void addNewNodePaths(List<NodePath> neighbors) {
         unexaminedNodePath.addAll(neighbors);
     }
 
-    public ArrayList<NodePath> getAllowedNeighboringNodePath() {
-        ArrayList<Cell> neighbors = worldMap.getNeighbors(currentPath.getCurrentCell());
-        ArrayList<NodePath> allowedNeighboringNodePath = new ArrayList<>();
+    public List<NodePath> getAllowedNeighboringNodePath() {
+        List<Cell> neighbors = WorldMapUtils.getNeighbors(currentPath.getCurrentCell(), worldMap);
+        List<NodePath> allowedNeighboringNodePath = new ArrayList<>();
 
         for (Cell neighbor : neighbors) {
             if (hasAllowing(neighbor)) {

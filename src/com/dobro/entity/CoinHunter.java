@@ -32,7 +32,7 @@ public class CoinHunter extends Creature {
         interactionCell.ifPresentOrElse(presentInteractionCell -> {
                     Optional<? extends Entity> entity = worldMap.getEntity(presentInteractionCell);
                     entity.ifPresentOrElse(presentEntity -> {
-                                System.out.printf("CoinHunter  %s ", location);
+                                System.out.printf("CoinHunter %s ", location);
                                 switch (presentEntity) {
                                     case Coin coin -> collectCoin(presentInteractionCell, worldMap);
                                     case CoinHunter coinHunter ->
@@ -44,13 +44,13 @@ public class CoinHunter extends Creature {
                             },
                             () -> super.makeMove(location, presentInteractionCell, worldMap));
                 },
-                () -> System.out.printf("сущность для взаимодействия не найдена %s", location));
+                () -> System.out.printf("сущность для взаимодействия не найдена " + location));
         System.out.println();
     }
 
     public void collectCoin(Cell location, WorldMap worldMap) {
         worldMap.removeEntity(location);
         incrementNumberOfCoinsCollected();
-        System.out.printf("Собрал монету %s", location);
+        System.out.printf("Собрал монету " + location);
     }
 }

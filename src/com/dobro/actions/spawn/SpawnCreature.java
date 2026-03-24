@@ -1,40 +1,39 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.path.Path;
-import com.dobro.entity.Entity;
 import com.dobro.Cell;
 import com.dobro.WorldMap;
+import com.dobro.WorldMapUtils;
+import com.dobro.entity.Entity;
+import com.dobro.path.Path;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class SpawnCreature extends Spawn {
-    public <T extends Entity> void spawnCreature(WorldMap worldMap, Class<? extends Entity> clazz, float probability, Supplier<Entity> supplier) {
-        ArrayList<Cell> previousSpawnLocations = worldMap.getCellsOfCertainType(clazz);
+    private final Class<? extends Entity> clazz;
+    private final Supplier<Entity> supplier;
 
-        for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
-            for (int indexColumn = worldMap.getOriginWorldMap().getX(); indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
-                Cell spawnLocation = new Cell(indexRow, indexColumn);
-                Optional<? extends Entity> entity = worldMap.getEntity(spawnLocation);
+    public SpawnCreature(Class<? extends Entity> clazz, float probability, Supplier<Entity> supplier) {
+        super(probability);
+        this.clazz = clazz;
+        this.supplier = supplier;
+    }
 
-                if (entity.isEmpty() && super.isPlaceEntity(worldMap.getSpawnRate(), probability)) {
-                    if (hasConnectionWithAnyEntity(spawnLocation, previousSpawnLocations, worldMap)) {
-                        worldMap.setEntity(spawnLocation, supplier.get());
-                        previousSpawnLocations.add(spawnLocation);
-                    }
-                }
-            }
+    @Override
+    public void spawn(WorldMap worldMap, Cell spawnCell) {
+        List<Cell> previousSpawnCells = WorldMapUtils.getCellsOfCertainType(clazz, worldMap);
+        if (hasConnectionWithAnyEntity(spawnCell, previousSpawnCells, worldMap)) {
+            worldMap.setEntity(spawnCell, supplier.get());
         }
     }
 
-    public boolean hasConnectionWithAnyEntity(Cell spawnLocation, ArrayList<Cell> previousSpawnLocations, WorldMap worldMap) {
-        for (Cell previousSpawnLocation : previousSpawnLocations) {
-            Path path = new Path(worldMap, spawnLocation, previousSpawnLocation);
+    private boolean hasConnectionWithAnyEntity(Cell spawnCell, List<Cell> previousSpawnCells, WorldMap worldMap) {
+        for (Cell previousSpawnCell : previousSpawnCells) {
+            Path path = new Path(worldMap, spawnCell, previousSpawnCell);
             if (path.isPathFound()) {
                 return true;
             }
         }
-        return previousSpawnLocations.isEmpty();
+        return previousSpawnCells.isEmpty();
     }
 }

@@ -1,5 +1,6 @@
 package com.dobro.strategy;
 
+import com.dobro.WorldMapUtils;
 import com.dobro.path.Path;
 import com.dobro.entity.Creature;
 import com.dobro.entity.Entity;
@@ -8,6 +9,7 @@ import com.dobro.WorldMap;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 public class InteractionCellFinder {
@@ -36,7 +38,7 @@ public class InteractionCellFinder {
     }
 
     public Optional<Path> findPathToNearestTarget(Cell location, WorldMap worldMap, Class<? extends Entity> targetClass) {
-        ArrayList<Cell> targets = findAllTargets(targetClass, worldMap);
+        List<Cell> targets = findAllTargets(targetClass, worldMap);
 
         return targets.stream()
                 .map(cell -> new Path(worldMap, location, cell))
@@ -44,7 +46,7 @@ public class InteractionCellFinder {
                 .min(Comparator.comparing(path -> path.getCurrentNodePath().getDistance()));
     }
 
-    public ArrayList<Cell> findAllTargets(Class<? extends Entity> targetClass, WorldMap worldMap) {
-        return worldMap.getCellsOfCertainType(targetClass);
+    public List<Cell> findAllTargets(Class<? extends Entity> targetClass, WorldMap worldMap) {
+        return WorldMapUtils.getCellsOfCertainType(targetClass, worldMap);
     }
 }

@@ -1,37 +1,34 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.path.Path;
-import com.dobro.entity.Coin;
-import com.dobro.entity.Entity;
 import com.dobro.Cell;
 import com.dobro.WorldMap;
+import com.dobro.WorldMapUtils;
+import com.dobro.entity.Coin;
+import com.dobro.entity.Entity;
+import com.dobro.path.Path;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 public class SpawnCoin extends Spawn {
+    private final Class<? extends Entity> clazz;
 
-    @Override
-    public void execute(WorldMap worldMap) {
-        ArrayList<Cell> previousSpawnLocations = worldMap.getCellsOfCertainType(SpawnDependency.COIN.getClazz());
-        for (int indexRow = worldMap.getOriginWorldMap().getY(); indexRow < worldMap.getMaxWidthField(); indexRow++) {
-            for (int indexColumn = worldMap.getOriginWorldMap().getX(); indexColumn < worldMap.getMaxLengthField(); indexColumn++) {
-                Cell spawnLocation = new Cell(indexRow, indexColumn);
-                Optional<? extends Entity> entity = worldMap.getEntity(spawnLocation);
-                if (entity.isEmpty() && super.isPlaceEntity(worldMap.getSpawnRate(), SpawnProbability.COIN.getProbability())) {
-                    if (!hasConnectionWithPreviousSpawnLocations(spawnLocation, previousSpawnLocations, worldMap)) {
-                        continue;
-                    }
-                    worldMap.setEntity(spawnLocation, new Coin());
-                    previousSpawnLocations.add(spawnLocation);
-                }
-            }
-        }
+    public SpawnCoin() {
+        super(SpawnProbability.COIN.getProbability());
+        this.clazz = SpawnDependency.COIN.getClazz();
     }
 
-    public boolean hasConnectionWithPreviousSpawnLocations(Cell spawnLocation, ArrayList<Cell> previousSpawnLocations, WorldMap worldMap) {
-        for (Cell previousSpawnLocation : previousSpawnLocations) {
-            Path path = new Path(worldMap, spawnLocation, previousSpawnLocation);
+    @Override
+    public void spawn(WorldMap worldMap, Cell spawnCell) {
+        List<Cell> previousSpawnCells = WorldMapUtils.getCellsOfCertainType(clazz, worldMap);
+        if (!hasConnectionWithPreviousSpawnCells(spawnCell, previousSpawnCells, worldMap)) {
+            return;
+        }
+        worldMap.setEntity(spawnCell, new Coin());
+    }
+
+    private boolean hasConnectionWithPreviousSpawnCells(Cell spawnCell, List<Cell> previousSpawnCells, WorldMap worldMap) {
+        for (Cell previousSpawnCell : previousSpawnCells) {
+            Path path = new Path(worldMap, spawnCell, previousSpawnCell);
             if (!path.isPathFound()) {
                 return false;
             }

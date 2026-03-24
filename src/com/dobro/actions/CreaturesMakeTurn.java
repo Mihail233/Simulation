@@ -1,30 +1,26 @@
 package com.dobro.actions;
 
-import com.dobro.entity.Creature;
-import com.dobro.entity.Entity;
 import com.dobro.Cell;
 import com.dobro.WorldMap;
+import com.dobro.entity.Creature;
+import com.dobro.entity.Entity;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class CreaturesMakeTurn extends Action {
     @Override
     public void execute(WorldMap worldMap) {
-        Map<Cell, Entity> copyEntities = worldMap.getCopyEntities();
-        for (Map.Entry<Cell, Entity> copyPieceOfWorldMap : copyEntities.entrySet()) {
-            Cell location = copyPieceOfWorldMap.getKey();
-            if (!hasContainInMainMap(worldMap, location)) {
-                continue;
-            }
-            Entity entity = copyPieceOfWorldMap.getValue();
-            if (Creature.class.isAssignableFrom(entity.getClass())) {
-                Creature creature = (Creature) entity;
-                creature.makeTurn(location, worldMap);
+        Map<Cell, Entity> entities = worldMap.getEntities();
+        for (Map.Entry<Cell, Entity> pieceEntity : entities.entrySet()) {
+
+            Cell cell = pieceEntity.getKey();
+            Optional<Entity> entity = worldMap.getEntity(cell);
+            if (entity.isPresent()) {
+                if (entity.get() instanceof Creature creature) {
+                    creature.makeTurn(cell, worldMap);
+                }
             }
         }
-    }
-
-    public boolean hasContainInMainMap(WorldMap worldMap, Cell location) {
-        return worldMap.getEntities().containsKey(location);
     }
 }

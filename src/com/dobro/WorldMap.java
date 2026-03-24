@@ -2,135 +2,65 @@ package com.dobro;
 
 import com.dobro.entity.Entity;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class WorldMap {
-    private final static List<Cell> SHIFT_COORDINATES = List.of(new Cell(0, 1), new Cell(0, -1), new Cell(-1, 0), new Cell(1, 0));
-    private final HashMap<Cell, Entity> entities = new HashMap<>();
-    private final Cell originWorldMap = new Cell(0, 0);
-    private final Scanner scanner = new Scanner(System.in);
-    private float spawnRate;
-    private int maxWidthField;
-    private int maxLengthField;
+    private final Map<Cell, Entity> entities = new HashMap<>();
+    private final Cell originCell = new Cell(0, 0);
+    private final int width;
+    private final int height;
+    private final float spawnRate;
 
-    public WorldMap() {
-        initWorldMap();
+    public WorldMap(int width, int height, float spawnRate) {
+        this.width = width;
+        this.height = height;
+        this.spawnRate = normalizeSpawnRate(spawnRate);
     }
 
-    public void initWorldMap() {
-        System.out.println("Введите начальные параметры");
-        System.out.println("Введите длину поля");
-        setMaxLengthField();
-        System.out.println("Введите ширину поля");
-        setMaxWidthField();
-        System.out.println("""
-                Важное условие: каждое существо или объект занимают клетку поля целиком
-                Нахождение в клетке нескольких объектов/существ - недопустимо
-                """
-        );
-        System.out.println("""
-                Выберите сложность замка (1–10):
-                1 — почти без препятствий
-                10 — максимально сложный, большое количество препятсвий
-                """
-        );
-        spawnRate = (0.125f * scanner.nextFloat() + 0.875f);
+    public float normalizeSpawnRate(float spawnRate) {
+        float scale = 0.125f;
+        float offset = 0.875f;
+        return scale * spawnRate + offset;
     }
 
-    public int getMaxLengthField() {
-        return maxLengthField;
+    public int getWidth() {
+        return width;
     }
 
-    public void setMaxLengthField() {
-        do {
-            System.out.println("Длина поля должна быть положительная");
-            maxLengthField = scanner.nextInt();
-        } while (maxLengthField < this.getOriginWorldMap().getX());
-    }
-
-    public int getMaxWidthField() {
-        return maxWidthField;
-    }
-
-    public void setMaxWidthField() {
-        do {
-            System.out.println("Ширина поля должна быть положительная");
-            maxWidthField = scanner.nextInt();
-        } while (maxWidthField < this.getOriginWorldMap().getY());
+    public int getHeight() {
+        return height;
     }
 
     public Cell getOriginWorldMap() {
-        return originWorldMap;
+        return originCell;
     }
 
-    public Map<Cell, Entity> getCopyEntities() {
-        return Map.copyOf(
-                this.getEntities().entrySet().stream()
-                        .collect(Collectors.toMap(
-                                (pieceOfWorldMap) -> {
-                                    Cell cell;
-                                    try {
-                                        cell = (Cell) pieceOfWorldMap.getKey().clone();
-                                    } catch (CloneNotSupportedException e) {
-                                        throw new RuntimeException(e);
-                                    }
-                                    return cell;
-                                },
-                                Map.Entry::getValue
-                        ))
-        );
-    }
-
-    public Optional<? extends Entity> getEntity(Cell cell) {
+    public Optional<Entity> getEntity(Cell cell) {
         return Optional.ofNullable(this.getEntities().get(cell));
     }
 
-    public HashMap<Cell, Entity> getEntities() {
-        return entities;
+    public Map<Cell, Entity> getEntities() {
+        return new HashMap<>(entities);
     }
 
     public void setEntity(Cell cell, Entity entity) {
-        this.getEntities().put(cell, entity);
+        validate(cell);
+        entities.put(cell, entity);
+    }
+
+    private void validate(Cell cell) {
+        if (WorldMapUtils.isOffTheMap(cell, this)) {
+            throw new RuntimeException(String.format("Клетка %s вне границы", cell));
+        }
     }
 
     public void removeEntity(Cell cell) {
-        this.getEntities().remove(cell);
+        entities.remove(cell);
     }
 
     public float getSpawnRate() {
         return spawnRate;
-    }
-
-    public ArrayList<Cell> getCellsOfCertainType(Class<? extends Entity> clazz) {
-        ArrayList<Cell> cells = new ArrayList<>();
-        for (Map.Entry<Cell, Entity> pieceOfWorldMap : this.getEntities().entrySet()) {
-            if (pieceOfWorldMap.getValue().getClass().equals(clazz)) {
-                cells.add(pieceOfWorldMap.getKey());
-            }
-        }
-        return cells;
-    }
-
-    public ArrayList<Cell> getNeighbors(Cell cell) {
-        ArrayList<Cell> neighbors = new ArrayList<>();
-        for (Cell shift : SHIFT_COORDINATES) {
-            Cell neighbor = new Cell(cell.getX() + shift.getX(), cell.getY() + shift.getY());
-            neighbors.add(neighbor);
-        }
-        neighbors.removeIf(this::isOffTheMap);
-        return neighbors;
-    }
-
-    public boolean isOffTheMap(Cell cell) {
-        boolean isOutsideLeftBorder = cell.getX() < this.getOriginWorldMap().getX();
-        boolean isOutsideRightBorder = cell.getX() >= this.getMaxLengthField();
-        boolean isOutsideTop = cell.getY() < this.getOriginWorldMap().getY();
-        boolean isOutsideBottomBorder = cell.getY() >= this.getMaxWidthField();
-        return isOutsideLeftBorder || isOutsideRightBorder || isOutsideTop || isOutsideBottomBorder;
-    }
-
-    public boolean hasEntity(Class<? extends Entity> clazz) {
-        return !this.getCellsOfCertainType(clazz).isEmpty();
     }
 }
