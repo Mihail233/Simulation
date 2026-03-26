@@ -1,7 +1,7 @@
 package com.dobro.actions;
 
 import com.dobro.Cell;
-import com.dobro.WorldMap;
+import com.dobro.worldmap.WorldMap;
 import com.dobro.entity.Creature;
 import com.dobro.entity.Entity;
 
@@ -12,9 +12,9 @@ public class CreaturesMakeTurn extends Action {
     @Override
     public void execute(WorldMap worldMap) {
         Map<Cell, Entity> entities = worldMap.getEntities();
-        for (Map.Entry<Cell, Entity> pieceEntity : entities.entrySet()) {
+        for (Map.Entry<Cell, Entity> pieceOfMap : entities.entrySet()) {
 
-            Cell cell = pieceEntity.getKey();
+            Cell cell = pieceOfMap.getKey();
             Optional<Entity> entity = worldMap.getEntity(cell);
             if (entity.isPresent()) {
                 if (entity.get() instanceof Creature creature) {

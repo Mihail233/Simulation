@@ -1,5 +1,6 @@
-package com.dobro;
+package com.dobro.worldmap;
 
+import com.dobro.Cell;
 import com.dobro.entity.Entity;
 
 import java.util.ArrayList;

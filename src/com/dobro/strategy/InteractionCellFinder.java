@@ -1,52 +1,52 @@
 package com.dobro.strategy;
 
-import com.dobro.WorldMapUtils;
-import com.dobro.path.Path;
+import com.dobro.Cell;
+import com.dobro.worldmap.WorldMap;
+import com.dobro.worldmap.WorldMapUtils;
 import com.dobro.entity.Creature;
 import com.dobro.entity.Entity;
-import com.dobro.Cell;
-import com.dobro.WorldMap;
+import com.dobro.path.PathFinder;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 public class InteractionCellFinder {
-    public <T extends Creature> Optional<Cell> getInteractionCell(Cell location, T entity, WorldMap worldMap, Class<? extends Entity> targetClass) {
-        Optional<Path> pathToNearestTarget = findPathToNearestTarget(location, worldMap, targetClass);
 
-        if (pathToNearestTarget.isPresent()) {
-            Cell interactionCell = findInteractionCell(entity.getInteractionDistance(), entity.getSpeed(), pathToNearestTarget.get());
+    public <T extends Creature> Optional<Cell> getInteractionCell(Cell currentCell, T entity, WorldMap worldMap, Class<? extends Entity> entityClazz) {
+        Optional<PathFinder> pathFinder = getPathFinderToTheNearestTargetCell(currentCell, worldMap, entityClazz);
+
+        if (pathFinder.isPresent()) {
+            Cell interactionCell = findInteractionCell(entity.getInteractionDistance(), entity.getSpeed(), pathFinder.get());
             return Optional.of(interactionCell);
         }
         return Optional.empty();
     }
 
-    public Cell findInteractionCell(int interactionDistance, int speed, Path pathToNearestTarget) {
-        int distanceToTarget = pathToNearestTarget.getCurrentNodePath().getDistance();
+    private Cell findInteractionCell(int interactionDistance, int speed, PathFinder pathFinder) {
+        int distanceToCell = pathFinder.getCurrentNodePath().getDistance();
 
-        if (distanceToTarget <= interactionDistance) {
-            return pathToNearestTarget.getCellDependingOnDistance(distanceToTarget);
+        if (distanceToCell <= interactionDistance) {
+            return pathFinder.getCellDependingOnDistance(distanceToCell);
 
-        } else if (distanceToTarget == speed) {
-            return pathToNearestTarget.getCellDependingOnDistance(distanceToTarget - interactionDistance);
+        } else if (distanceToCell == speed) {
+            return pathFinder.getCellDependingOnDistance(distanceToCell - interactionDistance);
 
         } else {
-            return pathToNearestTarget.getCellDependingOnDistance(speed);
+            return pathFinder.getCellDependingOnDistance(speed);
         }
     }
 
-    public Optional<Path> findPathToNearestTarget(Cell location, WorldMap worldMap, Class<? extends Entity> targetClass) {
-        List<Cell> targets = findAllTargets(targetClass, worldMap);
+    private Optional<PathFinder> getPathFinderToTheNearestTargetCell(Cell currentCell, WorldMap worldMap, Class<? extends Entity> entityClazz) {
+        List<Cell> targets = findAllTargetCells(entityClazz, worldMap);
 
         return targets.stream()
-                .map(cell -> new Path(worldMap, location, cell))
-                .filter(Path::isPathFound)
-                .min(Comparator.comparing(path -> path.getCurrentNodePath().getDistance()));
+                .map(cell -> new PathFinder(worldMap, currentCell, cell))
+                .filter(PathFinder::isPathFound)
+                .min(Comparator.comparing(pathFinder -> pathFinder.getCurrentNodePath().getDistance()));
     }
 
-    public List<Cell> findAllTargets(Class<? extends Entity> targetClass, WorldMap worldMap) {
-        return WorldMapUtils.getCellsOfCertainType(targetClass, worldMap);
+    private List<Cell> findAllTargetCells(Class<? extends Entity> entityClazz, WorldMap worldMap) {
+        return WorldMapUtils.getCellsOfCertainType(entityClazz, worldMap);
     }
 }

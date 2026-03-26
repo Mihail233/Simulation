@@ -5,11 +5,12 @@ import com.dobro.actions.CreaturesMakeTurn;
 import com.dobro.actions.spawn.*;
 import com.dobro.entity.CoinHunter;
 import com.dobro.entity.Ghost;
+import com.dobro.item.MoneyBag;
+import com.dobro.worldmap.WorldMap;
+import com.dobro.worldmap.WorldMapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.dobro.entity.CoinHunter.getNumberOfCoinsCollected;
 
 public class Simulation {
     private final WorldMap worldMap;
@@ -44,7 +45,6 @@ public class Simulation {
         clearConsole();
         executeAction(turnActions);
         GameMapRenderer.render(worldMap);
-        printResultOfTurn();
     }
 
     private void createAction() {
@@ -64,9 +64,5 @@ public class Simulation {
 
     private void clearConsole() {
         System.out.print("\033[H\033[J");
-    }
-
-    private void printResultOfTurn() {
-        System.out.println("Собранные монеты " + getNumberOfCoinsCollected());
     }
 }

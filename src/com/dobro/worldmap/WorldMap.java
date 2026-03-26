@@ -1,5 +1,6 @@
-package com.dobro;
+package com.dobro.worldmap;
 
+import com.dobro.Cell;
 import com.dobro.entity.Entity;
 
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class WorldMap {
         }
     }
 
-    public void removeEntity(Cell cell) {
+    public void removeCell(Cell cell) {
         entities.remove(cell);
     }
 

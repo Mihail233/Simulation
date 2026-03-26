@@ -1,7 +1,7 @@
 package com.dobro.actions.spawn;
 
 import com.dobro.Cell;
-import com.dobro.WorldMap;
+import com.dobro.worldmap.WorldMap;
 import com.dobro.entity.Candle;
 import com.dobro.entity.Entity;
 import com.dobro.entity.Rock;

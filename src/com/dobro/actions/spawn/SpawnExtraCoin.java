@@ -1,8 +1,8 @@
 package com.dobro.actions.spawn;
 
-import com.dobro.WorldMapUtils;
+import com.dobro.worldmap.WorldMapUtils;
 import com.dobro.entity.Coin;
-import com.dobro.WorldMap;
+import com.dobro.worldmap.WorldMap;
 
 public class SpawnExtraCoin extends SpawnCoin {
     @Override
@@ -13,8 +13,9 @@ public class SpawnExtraCoin extends SpawnCoin {
     }
 
     private boolean isFewCoinsLeft(WorldMap worldMap) {
-        int minNumberOfCoins = 2;
-        int remainingCoins = WorldMapUtils.getCellsOfCertainType(Coin.class, worldMap).size();
-        return remainingCoins < minNumberOfCoins;
+        int minimumNumberCellsWithCoins = 2;
+
+        int numberCellsWithCoins = WorldMapUtils.getCellsOfCertainType(Coin.class, worldMap).size();
+        return minimumNumberCellsWithCoins > numberCellsWithCoins;
     }
 }

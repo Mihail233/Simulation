@@ -1,12 +1,8 @@
 package com.dobro.actions.spawn;
 
 import com.dobro.Cell;
+import com.dobro.worldmap.WorldMap;
 import com.dobro.actions.Action;
-import com.dobro.WorldMap;
-import com.dobro.entity.Coin;
-import com.dobro.entity.Entity;
-
-import java.util.Optional;
 
 abstract public class Spawn extends Action {
     private final float probability;
@@ -15,7 +11,7 @@ abstract public class Spawn extends Action {
         this.probability = probability;
     }
 
-    public abstract void spawn(WorldMap worldMap, Cell spawnCell);
+    protected abstract void spawn(WorldMap worldMap, Cell spawnCell);
 
     @Override
     public void execute(WorldMap worldMap) {
@@ -27,13 +23,17 @@ abstract public class Spawn extends Action {
         for (int indexRow = startRow; indexRow < width; indexRow++) {
             for (int indexColumn = startColumn; indexColumn < height; indexColumn++) {
                 Cell spawnCell = new Cell(indexRow, indexColumn);
-                Optional<? extends Entity> entity = worldMap.getEntity(spawnCell);
-                if (entity.isEmpty() && isPlaceEntity(worldMap.getSpawnRate(), probability)) {
+                boolean isEmptyCell = worldMap.getEntity(spawnCell).isEmpty();
+                if (isSatisfySpawnConditions(isEmptyCell, worldMap)) {
                     spawn(worldMap, spawnCell);
                 }
             }
         }
-    };
+    }
+
+    private boolean isSatisfySpawnConditions(boolean isEmptyCell, WorldMap worldMap) {
+        return isEmptyCell && isPlaceEntity(worldMap.getSpawnRate(), probability);
+    }
 
     protected float getRandomNumber() {
         return (float) Math.random();

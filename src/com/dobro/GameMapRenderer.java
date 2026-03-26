@@ -1,6 +1,7 @@
 package com.dobro;
 
 import com.dobro.entity.*;
+import com.dobro.worldmap.WorldMap;
 
 import java.util.Optional;
 

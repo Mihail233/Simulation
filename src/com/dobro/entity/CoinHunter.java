@@ -1,56 +1,57 @@
 package com.dobro.entity;
 
-import com.dobro.strategy.TurnStrategy;
+import com.dobro.callback.Callback;
 import com.dobro.Cell;
-import com.dobro.WorldMap;
-
-import java.util.Optional;
+import com.dobro.worldmap.WorldMap;
+import com.dobro.item.MoneyBag;
+import com.dobro.strategy.TurnStrategy;
 
 public class CoinHunter extends Creature {
-    private static int numberOfCoinsCollected = 0;
-    private final TurnStrategy turnStrategy;
+    private final static int SPEED = 2;
+    private final static int INTERACTION_DISTANCE = 1;
+    private final static int HEALTH_POINTS = 1;
+    private final MoneyBag moneyBag = new MoneyBag();
+    private Callback onMeetCoinHunterCallback;
+    private Callback onCollectCallback;
 
     public CoinHunter(TurnStrategy turnStrategy) {
-        int interactionDistance = 1;
-        int speed = 2;
-        int healthPoints = 1;
-        super(interactionDistance, speed, healthPoints);
-        this.turnStrategy = turnStrategy;
+        super(SPEED, INTERACTION_DISTANCE, HEALTH_POINTS, turnStrategy);
     }
 
-    public void incrementNumberOfCoinsCollected() {
-        numberOfCoinsCollected++;
+    public MoneyBag getMoneyBag() {
+        return moneyBag;
     }
 
-    public static int getNumberOfCoinsCollected() {
-        return numberOfCoinsCollected;
+    public void setOnMeetCoinHunterCallback(Callback onMeetCoinHunterCallback) {
+        this.onMeetCoinHunterCallback = onMeetCoinHunterCallback;
+    }
+
+    public void setOnCollectCallback(Callback onCollectCallback) {
+        this.onCollectCallback = onCollectCallback;
     }
 
     @Override
-    public void makeTurn(Cell location, WorldMap worldMap) {
-        Optional<Cell> interactionCell = turnStrategy.getInteractionCell(location, this, worldMap);
-        interactionCell.ifPresentOrElse(presentInteractionCell -> {
-                    Optional<? extends Entity> entity = worldMap.getEntity(presentInteractionCell);
-                    entity.ifPresentOrElse(presentEntity -> {
-                                System.out.printf("CoinHunter %s ", location);
-                                switch (presentEntity) {
-                                    case Coin coin -> collectCoin(presentInteractionCell, worldMap);
-                                    case CoinHunter coinHunter ->
-                                            System.out.printf("встретил coinHunter %s, ход будет пропущен", presentInteractionCell);
-                                    case Ghost ghost ->
-                                            System.out.printf("встретил ghost %s, ход будет пропущен", presentInteractionCell);
-                                    default -> System.out.print("Неизвестная стратегия");
-                                }
-                            },
-                            () -> super.makeMove(location, presentInteractionCell, worldMap));
-                },
-                () -> System.out.printf("сущность для взаимодействия не найдена " + location));
-        System.out.println();
+    protected void interactWithEntity(Entity interactionEntity, Cell currentCell, Cell interactionCell, WorldMap worldMap) {
+        printName(currentCell);
+        switch (interactionEntity) {
+            case Coin coin -> collect(interactionCell, worldMap);
+            case CoinHunter coinHunter -> meetCoinHunter(interactionCell);
+            case Ghost ghost -> meetGhost(interactionCell);
+            default -> meetUnknownEntity(interactionCell);
+        }
     }
 
-    public void collectCoin(Cell location, WorldMap worldMap) {
-        worldMap.removeEntity(location);
-        incrementNumberOfCoinsCollected();
-        System.out.printf("Собрал монету " + location);
+    private void collect(Cell interactionCell, WorldMap worldMap) {
+        worldMap.removeCell(interactionCell);
+        moneyBag.incrementNumberOfCoins();
+        if (onCollectCallback != null) {
+            onCollectCallback.execute(interactionCell);
+        }
+    }
+
+    private void meetCoinHunter(Cell interactionCell) {
+        if (onMeetCoinHunterCallback != null) {
+            onMeetCoinHunterCallback.execute(interactionCell);
+        }
     }
 }

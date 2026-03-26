@@ -1,4 +1,6 @@
-package com.dobro;
+package com.dobro.worldmap;
+
+import com.dobro.UserInput;
 
 public class WorldMapFactory {
     public WorldMap initWorldMap() {
