@@ -1,4 +1,4 @@
-package com.dobro.actions.spawn;
+package com.dobro.action.spawn;
 
 import com.dobro.worldmap.WorldMapUtils;
 import com.dobro.entity.Coin;

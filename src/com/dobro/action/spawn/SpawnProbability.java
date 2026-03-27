@@ -1,4 +1,4 @@
-package com.dobro.actions.spawn;
+package com.dobro.action.spawn;
 
 public enum SpawnProbability {
     OBSTACLE(0.18f),

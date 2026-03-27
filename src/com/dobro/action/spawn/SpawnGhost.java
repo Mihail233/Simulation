@@ -1,4 +1,4 @@
-package com.dobro.actions.spawn;
+package com.dobro.action.spawn;
 
 import com.dobro.entity.Entity;
 import com.dobro.entity.Ghost;

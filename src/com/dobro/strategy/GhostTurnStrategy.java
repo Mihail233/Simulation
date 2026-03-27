@@ -2,7 +2,7 @@ package com.dobro.strategy;
 
 import com.dobro.Cell;
 import com.dobro.worldmap.WorldMap;
-import com.dobro.actions.spawn.SpawnDependency;
+import com.dobro.action.spawn.SpawnDependency;
 import com.dobro.entity.Creature;
 
 import java.util.Optional;

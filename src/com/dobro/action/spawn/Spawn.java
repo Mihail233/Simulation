@@ -1,8 +1,8 @@
-package com.dobro.actions.spawn;
+package com.dobro.action.spawn;
 
 import com.dobro.Cell;
 import com.dobro.worldmap.WorldMap;
-import com.dobro.actions.Action;
+import com.dobro.action.Action;
 
 abstract public class Spawn extends Action {
     private final float probability;

@@ -1,11 +1,11 @@
-package com.dobro;
+package com.dobro.simulation;
 
-import com.dobro.actions.Action;
-import com.dobro.actions.CreaturesMakeTurn;
-import com.dobro.actions.spawn.*;
+import com.dobro.GameMapRenderer;
+import com.dobro.action.Action;
+import com.dobro.action.CreaturesMakeTurn;
+import com.dobro.action.spawn.*;
 import com.dobro.entity.CoinHunter;
 import com.dobro.entity.Ghost;
-import com.dobro.item.MoneyBag;
 import com.dobro.worldmap.WorldMap;
 import com.dobro.worldmap.WorldMapUtils;
 
@@ -13,38 +13,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
+    private static final int SIMULATION_FREQUENCY = 1000;
     private final WorldMap worldMap;
     private final GameMapRenderer GameMapRenderer = new GameMapRenderer();
     private final List<Action> initActions = new ArrayList<>();
     private final List<Action> turnActions = new ArrayList<>();
+    private volatile boolean isPaused = false;
 
     public Simulation(WorldMap worldMap) {
         this.worldMap = worldMap;
+        initSimulation();
     }
 
-    public void startSimulation() {
-        while (hasStruggleForExistence()) {
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
+
+    public void start() throws InterruptedException {
+        while (!isPaused) {
+            if (isFinished()) {
+                System.exit(0);
+            }
             nextTurn();
+            Thread.sleep(SIMULATION_FREQUENCY);
         }
-        System.exit(0);
     }
 
-    public void initSimulation() {
-        clearConsole();
+    private boolean isFinished() {
+        return !(WorldMapUtils.hasEntity(CoinHunter.class, worldMap) && WorldMapUtils.hasEntity(Ghost.class, worldMap));
+    }
+
+    private void initSimulation() {
+        SimulationUtils.clearConsole();
         createAction();
         executeAction(initActions);
         System.out.println("Стартовая расстановка");
         GameMapRenderer.render(worldMap);
+        SimulationUtils.printOptions();
     }
 
-    public boolean hasStruggleForExistence() {
-        return WorldMapUtils.hasEntity(CoinHunter.class, worldMap) && WorldMapUtils.hasEntity(Ghost.class, worldMap);
-    }
-
-    public void nextTurn() {
-        clearConsole();
+    private void nextTurn() {
+        SimulationUtils.clearConsole();
         executeAction(turnActions);
         GameMapRenderer.render(worldMap);
+        SimulationUtils.printOptions();
     }
 
     private void createAction() {
@@ -60,9 +76,5 @@ public class Simulation {
         for (Action action : actions) {
             action.execute(worldMap);
         }
-    }
-
-    private void clearConsole() {
-        System.out.print("\033[H\033[J");
     }
 }

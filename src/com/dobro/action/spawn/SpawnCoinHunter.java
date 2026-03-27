@@ -1,4 +1,4 @@
-package com.dobro.actions.spawn;
+package com.dobro.action.spawn;
 
 import com.dobro.strategy.CoinHunterTurnStrategy;
 import com.dobro.entity.CoinHunter;

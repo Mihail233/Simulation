@@ -12,7 +12,7 @@ public class GameMapRenderer {
     private final String candlePicture = "\uD83D\uDD6F  ";
     private final String rockPicture = "️\uD83E\uDEA8 ";
     private final String vasePicture = "\uD83C\uDFFA ";
-    private final String graniteBlockPicture = "◻\uFE0F  ";
+    private final String graniteBlockPicture = "◻️  ";
     private final String blockBorder = "⬛ ";
 
     public void render(WorldMap worldMap) {

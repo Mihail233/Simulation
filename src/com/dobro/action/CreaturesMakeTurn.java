@@ -1,4 +1,4 @@
-package com.dobro.actions;
+package com.dobro.action;
 
 import com.dobro.Cell;
 import com.dobro.worldmap.WorldMap;

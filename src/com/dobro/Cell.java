@@ -1,7 +1,5 @@
 package com.dobro;
 
-import java.util.Objects;
-
 public record Cell(int x, int y)  {
 
     @Override
