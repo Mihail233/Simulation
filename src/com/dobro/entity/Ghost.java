@@ -14,7 +14,7 @@ public class Ghost extends Creature {
     private Callback onKillCallback;
 
     public Ghost(TurnStrategy turnStrategy) {
-        super(SPEED, INTERACTION_DISTANCE, HEALTH_POINTS, turnStrategy);
+        super(SPEED, INTERACTION_DISTANCE, turnStrategy, HEALTH_POINTS);
     }
 
     public void setOnHitCallback(Callback onHitCallback) {

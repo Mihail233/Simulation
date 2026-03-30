@@ -9,15 +9,15 @@ import com.dobro.entity.Creature;
 import java.util.Optional;
 
 public class CoinHunterTurnStrategy implements TurnStrategy {
-    private final InteractionCellFinder InteractionCellFinder;
+    private final InteractionCellFinder interactionCellFinder;
 
     public CoinHunterTurnStrategy() {
-        InteractionCellFinder = new InteractionCellFinder();
+        interactionCellFinder = new InteractionCellFinder();
     }
 
     //можно сделать преоритет (например, размножение существ выше чем получение ближайшей монеты)
     @Override
     public <T extends Creature> Optional<Cell> getInteractionCell(Cell currentCell, T entity, WorldMap worldMap) {
-        return InteractionCellFinder.getInteractionCell(currentCell, entity, worldMap, SpawnDependency.COIN_HUNTER.getClazz());
+        return interactionCellFinder.getInteractionCell(currentCell, entity, worldMap, SpawnDependency.COIN_HUNTER.getClazz());
     }
 }

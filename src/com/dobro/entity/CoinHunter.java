@@ -13,7 +13,7 @@ public class CoinHunter extends Creature {
     private Callback onCollectCallback;
 
     public CoinHunter(TurnStrategy turnStrategy) {
-        super(SPEED, INTERACTION_DISTANCE, HEALTH_POINTS, turnStrategy);
+        super(SPEED, INTERACTION_DISTANCE, turnStrategy, HEALTH_POINTS);
     }
 
     public void setOnMeetCoinHunterCallback(Callback onMeetCoinHunterCallback) {

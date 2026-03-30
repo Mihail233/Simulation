@@ -24,6 +24,6 @@ public class SpawnGhost extends SpawnCreature {
             ghost.setOnMeetUnknownEntityCallback((interactionCell) -> System.out.printf("Неизвестное существо на %s\n", interactionCell));
             return ghost;
         };
-        super(clazz, probability, supplier);
+        super(probability, clazz, supplier);
     }
 }

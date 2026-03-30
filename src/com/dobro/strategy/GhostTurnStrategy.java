@@ -8,14 +8,14 @@ import com.dobro.entity.Creature;
 import java.util.Optional;
 
 public class GhostTurnStrategy implements TurnStrategy {
-    private final InteractionCellFinder InteractionCellFinder;
+    private final InteractionCellFinder interactionCellFinder;
 
     public GhostTurnStrategy() {
-        InteractionCellFinder = new InteractionCellFinder();
+        interactionCellFinder = new InteractionCellFinder();
     }
 
     @Override
     public <T extends Creature> Optional<Cell> getInteractionCell(Cell currentCell, T entity, WorldMap worldMap) {
-        return InteractionCellFinder.getInteractionCell(currentCell, entity, worldMap, SpawnDependency.GHOST.getClazz());
+        return interactionCellFinder.getInteractionCell(currentCell, entity, worldMap, SpawnDependency.GHOST.getClazz());
     }
 }

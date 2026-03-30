@@ -13,7 +13,7 @@ public abstract class SpawnCreature extends Spawn {
     private final Class<? extends Entity> clazz;
     private final Supplier<Entity> supplier;
 
-    public SpawnCreature(Class<? extends Entity> clazz, float probability, Supplier<Entity> supplier) {
+    public SpawnCreature(float probability, Class<? extends Entity> clazz, Supplier<Entity> supplier) {
         super(probability);
         this.clazz = clazz;
         this.supplier = supplier;

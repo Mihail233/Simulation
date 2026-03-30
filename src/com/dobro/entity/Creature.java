@@ -12,19 +12,19 @@ abstract public class Creature extends Entity {
     private static final int HEALTH_POINTS_TO_DEATH = 0;
     private final int speed;
     private final int interactionDistance;
-    private int healthPoints;
     private final TurnStrategy turnStrategy;
+    private int healthPoints;
     private Callback onPrintNameCallback;
     private Callback onNotFindInteractionCellCallback;
     private Callback onMeetGhostCallback;
     private Callback onMeetUnknownEntityCallback;
     private MovementCallback onMoveCallback;
 
-    public Creature(int speed, int interactionDistance, int healthPoints, TurnStrategy turnStrategy) {
+    public Creature(int speed, int interactionDistance, TurnStrategy turnStrategy, int healthPoints) {
         this.speed = speed;
         this.interactionDistance = interactionDistance;
-        this.healthPoints = healthPoints;
         this.turnStrategy = turnStrategy;
+        this.healthPoints = healthPoints;
     }
 
     protected abstract void interactWithEntity(Entity entity, Cell currentCell, Cell interactionCell, WorldMap worldMap);

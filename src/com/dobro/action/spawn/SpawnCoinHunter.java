@@ -26,6 +26,6 @@ public class SpawnCoinHunter extends SpawnCreature {
             return coinHunter;
         };
 
-        super(clazz, probability,  supplier);
+        super(probability, clazz,  supplier);
     }
 }
